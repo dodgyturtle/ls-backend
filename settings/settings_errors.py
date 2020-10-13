@@ -20,6 +20,15 @@ DECODING_CODES = {
     '18' : 'No Comings',
     '19' : 'Coming is alredy exist',
     '20' : 'Coming updated',
-    '21' : 'Coming added',
+    '21' : 'Sale added',
+    '22' : 'Sale not found',
+    '23' : 'No Sales',
+    '24' : 'Sale is alredy exist',
+    '25' : 'Sale updated',
+    '26' : 'Balance added',
+    '27' : 'Balance not found',
+    '28' : 'No Balances',
+    '29' : 'Balance is alredy exist',
+    '30' : 'Balance updated',
 }
 TEXT_IF_NO_CODE = 'No error message'

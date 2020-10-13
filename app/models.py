@@ -48,6 +48,7 @@ class Sale(db.Model, ModelMixin, SerializerMixin):
     date = db.Column(db.String, default=datetime.datetime.utcnow().strftime('%d-%m-%Y %H:%M'))
     comment = db.Column(db.Text)
     sumprice = db.Column(db.Float)
+    sumquantity = db.Column(db.Integer)
     product = db.relationship('Product', backref='sales')
 
     def __repr__(self):

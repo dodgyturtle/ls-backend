@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <form class="form-group" role="form" action="{{ url_for('webbackend.client') }}" method="post">
+    <div class="card-header">
+      <h3 class="card-title">Добавить клиента</h3>
+    </div>
+      <div class="card-body">
+        <div class = "form-inline">
+          <div class="form-group mb-2">
+            <p class="p-3 mb-4">{{form.fullname.label}}</p>
+            <p class="p-3 mb-4">{{form.fullname(class='form-control')}}</p>
+          </div>
+          <div class="form-group mx-sm-3 mb-2">
+            <p class="p-3 mb-4">{{form.phone.label}}</p>
+            <p class="p-3 mb-2">{{form.phone(class='form-control', placeholder="89100000000")}}
+            <small class="form-text text-muted">Введите номер телефона БЕЗ пробелов и знаков "+", "-".</small></p>
+          </div>
+          <div class="form-group mx-sm-3 mb-2">
+            <p class="p-3 mb-4">{{form.status.label}}</p>
+            <p class="p-3 mb-4">{{form.status(class='form-control', checked=True)}}</p>
+          </div>
+          <div class="form-group mx-sm-3 mb-2">
+            <p class="p-3 mb-4">{{form.comment.label}}</p>
+            <p class="p-3 mb-4">{{form.comment(class='form-control')}}</p>
+          </div>
+            <p class="p-3 mb-4">{{form.submit(class='btn btn-primary mb-2')}}</p>
+        </div>
+      </div>
+    <div class="card-header">
+      <h3 class="card-title">Перечень клиентов</h3>
+    </div>
+      <div class="card-body">
+      <div class="form-group"> 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">ФИО</th>
+              <th scope="col">Номер телефона</th>
+              <th scope="col">Статус</th>
+              <th scope="col">Комментарий</th>
+              <th scope="col">Заказы</th>
+              <th scope="col">Редактировать</th>
+              <th scope="col">Удалить</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if clients %}
+            {% for client in clients %}
+            <tr>      
+              <th scope="row">{{loop.index}}</th>
+              <td>{{ client.fullname }}</td>
+              <td>{{ client.phone }}</td>
+              <td>{{ client.status }}</td>
+              <td>{{ client.comment }}</td>
+              <td><a href="{{ url_for('webbackend.client') }}"><span class="badge badge-success">Заказы</span></a></td>
+              <td><a href="{{ url_for('webbackend.clientupdate', client_id=client.id) }}"><span class="badge badge-warning">Редактировать</span></a></td>
+              <td><a href="{{ url_for('webbackend.clientdelete', client_id=client.id) }}"><span class="badge badge-danger">Удалить</span></a></td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+      </div>
+      </div>
+  </form>
+</div>
+
+
+{% endblock %}
+
+

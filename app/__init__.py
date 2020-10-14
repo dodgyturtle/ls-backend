@@ -4,7 +4,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_restful import Api
-#from werkzeug.exceptions import HTTPException
+from werkzeug.exceptions import HTTPException
 
 # instantiate extensions
 login_manager = LoginManager()
@@ -17,6 +17,7 @@ def create_app(environment='development'):
     from config import config
     from app.views import main_blueprint
     from app.auth.views import auth_blueprint
+    from app.webbackend.views import web_blueprint
     from app.apibackend.views import api_blueprint
     from app.auth.models import User, AnonymousUser
 
@@ -37,6 +38,7 @@ def create_app(environment='development'):
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
     app.register_blueprint(api_blueprint)
+    app.register_blueprint(web_blueprint)
 
     # Set up flask login.
     @login_manager.user_loader
@@ -47,9 +49,9 @@ def create_app(environment='development'):
     login_manager.login_message_category = 'info'
     login_manager.anonymous_user = AnonymousUser
 
-    # # Error handlers.
-    # @app.errorhandler(HTTPException)
-    # def handle_http_error(exc):
-    #     return render_template('error.html', error=exc), exc.code
+    # Error handlers.
+    @app.errorhandler(HTTPException)
+    def handle_http_error(exc):
+        return render_template('error.html', error=exc), exc.code
 
     return app

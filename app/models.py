@@ -8,6 +8,7 @@ from app.auth.models import AnonymousUser, User
 
 
 class Client(db.Model, ModelMixin, SerializerMixin):
+    serialize_rules = ('-sales', '-comings', '-balances' )
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.Integer, unique=True)
@@ -31,7 +32,7 @@ class Stock(db.Model, ModelMixin, SerializerMixin):
         return self.namestock
 
 class Product(db.Model, ModelMixin, SerializerMixin):
-    serialize_rules = ('-sales', '-comings', '-balances',)
+    serialize_rules = ('-sales', '-comings', '-balances' )
     id = db.Column(db.Integer, primary_key=True)
     nameproduct = db.Column(db.String(100))
     numberproduct = db.Column(db.String(100))
@@ -40,16 +41,19 @@ class Product(db.Model, ModelMixin, SerializerMixin):
         return self.nameproduct, self.numberproduct
 
 class Sale(db.Model, ModelMixin, SerializerMixin):
-    serialize_rules = ('-product.sales', '-product.comings', '-product.balances',)
+    serialize_rules = ('-product.sales', '-product.comings', '-product.balances', '-client.sales')
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete= 'CASCADE'), index=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('client.id', ondelete= 'CASCADE'), index=True)
     price = db.Column(db.Float)
     quantuty = db.Column(db.Integer)
-    date = db.Column(db.String, default=datetime.datetime.utcnow().strftime('%d-%m-%Y %H:%M'))
+    date = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     comment = db.Column(db.Text)
+    status = db.Column(db.Boolean, default=True)
     sumprice = db.Column(db.Float)
     sumquantity = db.Column(db.Integer)
     product = db.relationship('Product', backref='sales')
+    client = db.relationship('Client', backref='sales')
 
     def __repr__(self):
         return self.id
@@ -59,7 +63,7 @@ class Coming(db.Model, ModelMixin, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete= 'CASCADE'), index=True)
     price = db.Column(db.Float)
-    quantuty = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
     date = db.Column(db.String, default=datetime.datetime.utcnow().strftime('%d-%m-%Y %H:%M'))
     comment = db.Column(db.Text)
     sumprice = db.Column(db.Float)

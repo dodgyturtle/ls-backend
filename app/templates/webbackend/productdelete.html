@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <form class="form-group" role="form" action="{{url_for('webbackend.productdelete', product_id=product['id']) }}" method="post">
+    <div class="card-header">
+      <h3 class="card-title">Удалить товар</h3>
+    </div>
+      <div class="card-body">
+      <div class="form-group"> 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Название</th>
+              <th scope="col">Модель</th>
+              <th scope="col">Удалить</th>
+              <th scope="col">Отменить</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>      
+              <td>{{ product.nameproduct }}</td>
+              <td>{{ product.numberproduct }}</td>
+              <td>{{form.submit(class='btn btn-danger')}}</td>
+              <td>{{form.cancel(class='btn btn-dark')}}</td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
+      </div>
+  </form>
+</div>
+{% endblock %}
+
+

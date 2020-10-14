@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <form class="form-group" role="form" action="{{url_for('webbackend.clientupdate', client_id=client['id']) }}" method="post">
+    <div class="card-header">
+      <h3 class="card-title">Изменить данные клиента</h3>
+    </div>
+      <div class="card-body">
+      <div class="form-group"> 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ФИО</th>
+              <th scope="col">Номер телефона</th>
+              <th scope="col">Статус</th>
+              <th scope="col">Комментарий</th>
+              <th scope="col">Изменить</th>
+              <th scope="col">Отменить</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>      
+              <td>{{ form.fullname(class='form-control' ,value=client.fullname) }}</td>
+              <td>{{ form.phone(class='form-control' ,value=client.phone) }}</td>
+              <td>{{ form.status(class='form-control' ,checked=client.status) }}</td>
+              <td>{{ form.comment(class='form-control' ,value=client.comment) }}</td>
+              <td>{{ form.submit(class='btn btn-danger') }}</td>
+              <td>{{ form.cancel(class='btn btn-dark') }}</td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
+      </div>
+  </form>
+</div>
+{% endblock %}
+
+

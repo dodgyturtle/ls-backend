@@ -2,42 +2,125 @@ from flask import Blueprint, render_template, url_for, redirect, flash, request
 from flask_login import login_user, logout_user, login_required
 
 from app import db
-from app.auth.models import User
-from app.auth.forms import LoginForm, RegistrationForm
+from app.models import Product, Client, Sale
+from app.webbackend.forms import AddProductForm, DeleteForm, UpdateProductForm, AddClientForm, UpdateClientForm, AddSaleForm
 
-auth_blueprint = Blueprint('auth', __name__)
+web_blueprint = Blueprint('webbackend', __name__)
 
 
-@auth_blueprint.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm(request.form)
+@web_blueprint.route('/product', methods=['GET', 'POST'])
+def product():
+    form = AddProductForm(request.form)
     if form.validate_on_submit():
-        user = User(username=form.username.data, password=form.password.data)
-        user.save()
-        login_user(user)
-        flash('Registration successful. You are logged in.', 'success')
-        return redirect(url_for("main.index"))
+        product_db = Product(nameproduct=form.nameproduct.data, numberproduct=form.numberproduct.data)
+        product_db.save()
     elif form.is_submitted():
-        flash('The given data was invalid.', 'danger')
-    return render_template('auth/register.html', form=form)
+        flash(f'Ошибка ввода данных: { ", ".join(form.errors.get("nameproduct") or form.errors.get("numberproduct"))}', 'danger')
+    products = Product.query.all()
+    return render_template('webbackend/product.html', form=form, products=products)
 
 
-@auth_blueprint.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm(request.form)
+@web_blueprint.route('/productupdate/<int:product_id>', methods=['GET', 'POST'])
+def productupdate(product_id: int):
+    form =  UpdateProductForm(request.form)
+    product_db = Product.query.filter(Product.id == product_id).first()
+    if form.is_submitted():
+        if form.submit.data and form.validate():
+            Product.query.filter(Product.id == product_id).update({'nameproduct': form.nameproduct.data, 'numberproduct': form.numberproduct.data})
+            db.session.commit()
+            flash('Обновлено!', 'info')
+            return redirect(url_for('webbackend.product'))  
+        elif form.cancel.data:
+            return redirect(url_for('webbackend.product'))
+        else:
+            flash(f'Ошибка ввода данных: { ", ".join(form.errors.get("nameproduct") or form.errors.get("numberproduct"))}', 'danger')      
+    return render_template('webbackend/productupdate.html', form=form, product=product_db)
+
+
+@web_blueprint.route('/productdelete/<int:product_id>', methods=['GET', 'POST'])
+def productdelete(product_id: int):
+    form =  DeleteForm(request.form)
+    product_db = Product.query.filter(Product.id == product_id).first()
+    if form.is_submitted():
+        if form.submit.data and product_db:      
+            product_db.delete()
+            flash('Удалено!', 'info')
+            return redirect(url_for('webbackend.product'))  
+        elif form.cancel.data:
+            return redirect(url_for('webbackend.product'))  
+    return render_template('webbackend/productdelete.html', form=form, product=product_db)
+
+
+@web_blueprint.route('/client', methods=['GET', 'POST'])
+def client():
+    form = AddClientForm(request.form)
     if form.validate_on_submit():
-        user = User.authenticate(form.user_id.data, form.password.data)
-        if user is not None:
-            login_user(user)
-            flash('Login successful.', 'success')
-            return redirect(url_for('main.index'))
-        flash('Wrong user ID or password.', 'danger')
-    return render_template('auth/login.html', form=form)
+        client_db = Client(
+            fullname =  form.fullname.data,
+            phone = form.phone.data,
+            status = form.status.data,
+            comment = form.comment.data,
+        )
+        client_db.save()
+    elif form.is_submitted():
+        flash(f'Ошибка ввода данных: { ", ".join(form.errors.get("phone"))}', 'danger')
+    clients = Client.query.all()
+    return render_template('webbackend/client.html', form=form, clients=clients)
 
 
-@auth_blueprint.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You were logged out.', 'info')
-    return redirect(url_for('main.index'))
+@web_blueprint.route('/clientupdate/<int:client_id>', methods=['GET', 'POST'])
+def clientupdate(client_id: int):
+    form =  UpdateClientForm(request.form)
+    client_db = Client.query.filter(Client.id == client_id).first()
+    if form.is_submitted():
+        if form.submit.data and form.validate():
+            Client.query.filter(Client.id == client_id).update(
+                {
+                    'fullname': form.fullname.data,
+                    'phone': form.phone.data,
+                    'status': form.status.data,
+                    'comment': form.comment.data,
+                }
+            )
+            db.session.commit()
+            flash('Обновлено!', 'info')
+            return redirect(url_for('webbackend.client'))  
+        elif form.cancel.data:
+            return redirect(url_for('webbackend.client'))
+        else:
+            flash(f'Ошибка ввода данных: { ", ".join(form.errors.get("phone"))}', 'danger')      
+    return render_template('webbackend/clientupdate.html', form=form, client=client_db)
+
+
+@web_blueprint.route('/clientdelete/<int:client_id>', methods=['GET', 'POST'])
+def clientdelete(client_id: int):
+    form =  DeleteForm(request.form)
+    client_db = Client.query.filter(Client.id == client_id).first()
+    if form.is_submitted():
+        if form.submit.data and client_db:      
+            client_db.delete()
+            flash('Удалено!', 'info')
+            return redirect(url_for('webbackend.client'))  
+        elif form.cancel.data:
+            return redirect(url_for('webbackend.client'))  
+    return render_template('webbackend/clientdelete.html', form=form, client=client_db)
+
+
+@web_blueprint.route('/sale', methods=['GET', 'POST'])
+def sale():
+    form = AddSaleForm(request.form)
+    if form.validate_on_submit():
+        sale_db = Sale(
+            client_id = form.client_id.data,
+            product_id = form.product_id.data,
+            quantity = form.quantity.data,
+            price = form.price.data,
+            comment = form.comment.data,
+            sumprice = form.sumprice.data,
+            status = form.status.data,
+        )
+        sale_db.save()
+    elif form.is_submitted():
+        flash(f'Ошибка ввода данных: {form.errors }', 'danger')
+    sales = Sale.query.all()
+    return render_template('webbackend/sale.html', form=form, sales=sales)

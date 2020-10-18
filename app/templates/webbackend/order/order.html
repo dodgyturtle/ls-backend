@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card-header">
+      <h3 class="card-title">Заказ</h3>
+    </div>
+      <div class="card-body">
+      <div class="form-group"> 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Дата и Время</th>
+              <th scope="col">Клиент</th>
+              <th scope="col">Товар</th>
+              <th scope="col">Количество</th>
+              <th scope="col">Стоимость</th>
+              <th scope="col">Итоговая стоимость</th>
+              <th scope="col">Статус</th>
+              <th scope="col">Комментарий</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if orders %}
+            {% for order in orders %}
+            <tr>      
+              <th scope="row">{{loop.index}}</th>
+              <td>{{ order.date.strftime('%d-%m-%Y %H:%M') }}</td>
+              <td>{{ order.client.fullname }}</td>
+              <td>{{ order.product.nameproduct }}</td>
+              <td>{{ order.quantity }}</td>
+              <td>{{ order.price }}</td>
+              <td>{{ order.sumprice }}</td>
+              {% if order.status %}
+                <td span class="badge badge-success">Выдано</td>
+              {% else %}
+                <td span class="badge badge-info" >Не выдано</td>
+              {% endif %}
+              <td>{{ order.comment }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+      </div>
+      </div>
+</div>
+{% endblock %}
+
+

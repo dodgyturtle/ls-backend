@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <form class="form-group" role="form" action="{{ url_for('webbackend.saleupdate', sale_id=sale['id']) }}" method="post">
+    <div class="card-header">
+      <h3 class="card-title">Изменить данные в приходе</h3>
+    </div>
+      <div class="card-body">
+      <div class="form-group"> 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Клиент</th>
+              <th scope="col">Товар</th>
+              <th scope="col">Количество</th>
+              <th scope="col">Стоимость</th>
+              <th scope="col">Итоговая стоимость</th>
+              <th scope="col">Статус</th>
+              <th scope="col">Комментарий</th>
+              <th scope="col">Изменить</th>
+              <th scope="col">Отменить</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ form.client_id(class='form-control' ,value=sale.client_id) }}</td>
+              <td>{{ form.product_id(class='form-control' ,value=sale.product_id) }}</td>
+              <td>{{ form.quantity(class='form-control' ,value=sale.quantity) }}</td>
+              <td>{{ form.price(class='form-control' ,value=sale.price) }}</td>
+              <td>{{ form.sumprice(class='form-control' ,value=sale.sumprice) }}</td>
+              <td>{{ form.status(class='form-control' ,checked=sale.status) }}</td>
+              <td>{{ form.comment(class='form-control' ,value=sale.comment) }}</td>
+              <td>{{ form.submit(class='btn btn-danger') }}</td>
+              <td>{{ form.cancel(class='btn btn-dark') }}</td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
+      </div>
+  </form>
+</div>
+{% endblock %}
+
+

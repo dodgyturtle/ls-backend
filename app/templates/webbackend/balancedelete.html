@@ -2,33 +2,32 @@
 
 {% block content %}
 <div class="container-fluid">
-  <form class="form-group" role="form" action="{{url_for('webbackend.clientdelete', client_id=client['id']) }}" method="post">
+  <form class="form-group" role="form" action="{{ url_for('webbackend.balancedelete', balance_id=balance['id']) }}" method="post">
     <div class="card-header">
-      <h3 class="card-title">Удалить клиента</h3>
+      <h3 class="card-title">Удалить</h3>
     </div>
       <div class="card-body">
       <div class="form-group"> 
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">ФИО</th>
-              <th scope="col">Номер телефона</th>
-              <th scope="col">Статус</th>
+              <th scope="col">#</th>
+              <th scope="col">Товар</th>
+              <th scope="col">Количество</th>
+              <th scope="col">Стоимость</th>
+              <th scope="col">Итоговая стоимость</th>
               <th scope="col">Комментарий</th>
               <th scope="col">Удалить</th>
               <th scope="col">Отменить</th>
             </tr>
           </thead>
           <tbody>
-            <tr>      
-              <td>{{ client.fullname }}</td>
-              <td>{{ client.phone }}</td>
-              {% if client.status %}
-                <td>Выдано</td>
-              {% else %}
-                <td>Не выдано</td>
-              {% endif %}
-              <td>{{ client.comment }}</td>
+            <tr>
+              <td>{{ balance.product.nameproduct }}</td>
+              <td>{{ balance.quantity }}</td>
+              <td>{{ balance.price }}</td>
+              <td>{{ balance.sumprice }}</td>
+              <td>{{ balance.comment }}</td>
               <td>{{form.submit(class='btn btn-danger')}}</td>
               <td>{{form.cancel(class='btn btn-dark')}}</td>
             </tr>

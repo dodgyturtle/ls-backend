@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <form class="form-group" role="form" action="{{url_for('webbackend.balanceupdate', balance_id=balance['id']) }}" method="post">
+    <div class="card-header">
+      <h3 class="card-title">Изменить данные по остаткам</h3>
+    </div>
+      <div class="card-body">
+      <div class="form-group"> 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Товар</th>
+              <th scope="col">Количество</th>
+              <th scope="col">Стоимость</th>
+              <th scope="col">Итоговая сумма</th>
+              <th scope="col">Изменить</th>
+              <th scope="col">Отменить</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>      
+              <td>{{ form.product_id(class='form-control' ,value=balance.product_id) }}</td>
+              <td>{{ form.quantity(class='form-control' ,value=balance.quantity) }}</td>
+              <td>{{ form.price(class='form-control' ,value=balance.price) }}</td>
+              <td>{{ form.sumprice(class='form-control' ,value=balance.sumprice) }}</td>
+              <td>{{ form.submit(class='btn btn-danger') }}</td>
+              <td>{{ form.cancel(class='btn btn-dark') }}</td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
+      </div>
+  </form>
+</div>
+{% endblock %}
+
+

@@ -2,6 +2,7 @@
 import click
 
 from app import create_app, db, models, forms
+from app.models import Client, User
 from tests import test_app
 
 app = create_app()
@@ -18,6 +19,11 @@ def get_context():
 def create_db():
     """Create the configured database."""
     db.create_all()
+    default_client = Client(fullname="Клиент", phone=89100000000)
+    default_client.save()
+    user = User(username='admin', password=)
+    user.save()
+    
 
 
 @app.cli.command()

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <form class="form-group" role="form" action="{{ url_for('webbackend.comingdelete', coming_id=coming['id']) }}" method="post">
+    <div class="card-header">
+      <h3 class="card-title">Удалить</h3>
+    </div>
+      <div class="card-body">
+      <div class="form-group"> 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Дата и Время</th>
+              <th scope="col">Товар</th>
+              <th scope="col">Количество</th>
+              <th scope="col">Стоимость</th>
+              <th scope="col">Итоговая стоимость</th>
+              <th scope="col">Комментарий</th>
+              <th scope="col">Удалить</th>
+              <th scope="col">Отменить</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>      
+              <td>{{ coming.date.strftime('%d-%m-%Y %H:%M') }}</td>
+              <td>{{ coming.product.nameproduct }}</td>
+              <td>{{ coming.quantity }}</td>
+              <td>{{ coming.price }}</td>
+              <td>{{ coming.sumprice }}</td>
+              <td>{{ coming.comment }}</td>
+              <td>{{form.submit(class='btn btn-danger')}}</td>
+              <td>{{form.cancel(class='btn btn-dark')}}</td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
+      </div>
+  </form>
+</div>
+{% endblock %}
+
+

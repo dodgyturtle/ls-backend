@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
   <form class="form-group" role="form" action="{{ url_for('webbackend.client') }}" method="post">
     <div class="card-header">
       <h3 class="card-title">Добавить клиента</h3>
@@ -19,7 +19,7 @@
           </div>
           <div class="form-group mx-sm-3 mb-2">
             <p class="p-3 mb-4">{{form.status.label}}</p>
-            <p class="p-3 mb-4">{{form.status(class='form-control', checked=True)}}</p>
+            <p class="p-3 mb-4">{{form.status(class='form-control')}}</p>
           </div>
           <div class="form-group mx-sm-3 mb-2">
             <p class="p-3 mb-4">{{form.comment.label}}</p>
@@ -53,9 +53,13 @@
               <th scope="row">{{loop.index}}</th>
               <td>{{ client.fullname }}</td>
               <td>{{ client.phone }}</td>
-              <td>{{ client.status }}</td>
+              {% if client.status %}
+                <td>Выдано</td>
+              {% else %}
+                <td>Не выдано</td>
+              {% endif %}
               <td>{{ client.comment }}</td>
-              <td><a href="{{ url_for('webbackend.client') }}"><span class="badge badge-success">Заказы</span></a></td>
+              <td><a href="{{ url_for('webbackend.order', client_id=client.id) }}"><span class="badge badge-success">Заказы</span></a></td>
               <td><a href="{{ url_for('webbackend.clientupdate', client_id=client.id) }}"><span class="badge badge-warning">Редактировать</span></a></td>
               <td><a href="{{ url_for('webbackend.clientdelete', client_id=client.id) }}"><span class="badge badge-danger">Удалить</span></a></td>
             </tr>

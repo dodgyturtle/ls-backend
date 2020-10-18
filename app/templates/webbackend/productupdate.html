@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
   <form class="form-group" role="form" action="{{url_for('webbackend.productupdate', product_id=product['id']) }}" method="post">
     <div class="card-header">
       <h3 class="card-title">Изменить товар</h3>

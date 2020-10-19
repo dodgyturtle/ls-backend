@@ -91,6 +91,22 @@
       </div>
   </form>
 </div>
+<script>
+  price.addEventListener('keyup', () => {
+    var jsprice = parseFloat($('#price').val());
+    var jsquantity = parseFloat($('#quantity').val());
+    if (isNaN(jsprice) || isNaN(jsquantity)) {
+      var jssumprice = 0;
+    }
+    else if (Number.isInteger(jsprice)) {
+      var jssumprice = 0;
+    }
+    else {
+      var jssumprice = jsprice * jsquantity;
+    }
+    document.getElementById('sumprice').value = jssumprice;
+  });
+</script>
 {% endblock %}
 
 

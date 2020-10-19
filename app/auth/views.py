@@ -16,7 +16,7 @@ def register():
         user = User(username=form.username.data, password=form.password.data)
         user.save()
         login_user(user)
-        flash('Вы зарегистрированы!.', 'success')
+        flash('Вы зарегистрированы!', 'success')
         return redirect(url_for("webbackend.sale"))
     elif form.is_submitted():
         flash('Ошибка ввода данных!.', 'danger')
@@ -32,9 +32,9 @@ def login():
         user = User.authenticate(form.user_id.data, form.password.data)
         if user is not None:
             login_user(user)
-            flash('Успешная авторизация.', 'success')
+            flash('Успешная авторизация', 'success')
             return redirect(url_for('webbackend.sale'))
-        flash('Неверный пользователь или пароль.', 'danger')
+        flash('Неверный пользователь или пароль', 'danger')
     return render_template('auth/login.html', form=form)
 
 

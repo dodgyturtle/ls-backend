@@ -76,19 +76,17 @@
 </div>
 <script>
   price.addEventListener('keyup', () => {
-    var jsprice = parseFloat($('#price').val());
-    var jsquantity = parseFloat($('#quantity').val());
-    if (isNaN(jsprice) || isNaN(jsquantity)) {
-      var jssumprice = 0;
-    }
-    else if (Number.isInteger(jsprice)) {
+    var jsprice = $('#price').val();
+    var jsquantity = $('#quantity').val();
+
+    if (isNaN(jsprice) || isNaN(jsquantity) || (jsquantity.indexOf(',') != -1)) {
       var jssumprice = 0;
     }
     else {
-      var jssumprice = jsprice * jsquantity;
+      var jssumprice = parseFloat(jsprice) * parseFloat(jsquantity);
     }
-    document.getElementById('sumprice').value = jssumprice;
-  });
+    document.getElementById('sumprice').value = jssumprice.toFixed(2);
+    });
 </script>
 {% endblock %}
 

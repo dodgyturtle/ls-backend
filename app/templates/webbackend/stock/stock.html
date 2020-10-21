@@ -3,35 +3,36 @@
 {% block content %}
 <div class="container-fluid">
   <form class="form-group" role="form" action="{{ url_for('webbackend.stock') }}" method="post">
+    {{ form.csrf_token }}
     <div class="card-header">
       <h3 class="card-title">Добавить акцию</h3>
     </div>
-      <div class="card-body">
-        <div class = "form-inline">
-          <div class="form-group mb-2">
-            <p class="p-3 mb-2">{{form.namestock.label}}</p>
-            <p class="p-3 mb-2">{{form.namestock(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.nameproduct.label}}</p>
-            <p class="p-3 mb-2">{{form.nameproduct(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.quantity.label}}</p>
-            <p class="p-3 mb-2">{{form.quantity(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.comment.label}}</p>
-            <p class="p-3 mb-2">{{form.comment(class='form-control')}}</p>
-          </div>
-            <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
+    <div class="card-body">
+      <div class="form-inline">
+        <div class="form-group mb-2">
+          <p class="p-3 mb-2">{{form.namestock.label}}</p>
+          <p class="p-3 mb-2">{{form.namestock(class='form-control')}}</p>
         </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.nameproduct.label}}</p>
+          <p class="p-3 mb-2">{{form.nameproduct(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.quantity.label}}</p>
+          <p class="p-3 mb-2">{{form.quantity(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.comment.label}}</p>
+          <p class="p-3 mb-2">{{form.comment(class='form-control')}}</p>
+        </div>
+        <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
       </div>
+    </div>
     <div class="card-header">
       <h3 class="card-title">Перечень акции</h3>
     </div>
-      <div class="card-body">
-      <div class="form-group"> 
+    <div class="card-body">
+      <div class="form-group">
         <table class="table">
           <thead>
             <tr>
@@ -48,24 +49,24 @@
           <tbody>
             {% if stocks %}
             {% for stock in stocks %}
-            <tr>      
+            <tr>
               <th scope="row">{{loop.index}}</th>
               <td>{{ stock.date.strftime('%d-%m-%Y %H:%M') }}</td>
               <td>{{ stock.namestock }}</td>
               <td>{{ stock.nameproduct }}</td>
               <td>{{ stock.quantity }}</td>
               <td>{{ stock.comment }}</td>
-              <td><a href="{{url_for('webbackend.stockupdate', stock_id=stock.id) }}"><span class="badge badge-warning">Редактировать</span></a></td>
-              <td> <a href="{{url_for('webbackend.stockdelete', stock_id=stock.id) }}"><span class="badge badge-danger">Удалить</span></a></td>
+              <td><a href="{{url_for('webbackend.stockupdate', stock_id=stock.id) }}"><span
+                    class="badge badge-warning">Редактировать</span></a></td>
+              <td> <a href="{{url_for('webbackend.stockdelete', stock_id=stock.id) }}"><span
+                    class="badge badge-danger">Удалить</span></a></td>
             </tr>
             {% endfor %}
             {% endif %}
-            </tbody>
+          </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
-
-

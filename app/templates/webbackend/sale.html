@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container-fluid">
   <form class="form-group" role="form" action="{{ url_for('webbackend.sale') }}" method="post">
+    {{ form.csrf_token }}
     <div class="card-header">
       <h3 class="card-title">Продажа</h3>
     </div>

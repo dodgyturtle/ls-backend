@@ -1,25 +1,28 @@
 import os
 
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 from werkzeug.exceptions import HTTPException
 
 # instantiate extensions
 login_manager = LoginManager()
 db = SQLAlchemy()
 api = Api()
+csrf = CSRFProtect()
 
 
 def create_app(environment='development'):
 
     from config import config
-    from app.views import main_blueprint
-    from app.auth.views import auth_blueprint
-    from app.webbackend.views import web_blueprint
+
     from app.apibackend.views import api_blueprint
-    from app.auth.models import User, AnonymousUser
+    from app.auth.models import AnonymousUser, User
+    from app.auth.views import auth_blueprint
+    from app.views import main_blueprint
+    from app.webbackend.views import web_blueprint
 
     # Instantiate app.
     app = Flask(__name__)
@@ -33,6 +36,7 @@ def create_app(environment='development'):
     db.init_app(app)
     api.init_app(app)
     login_manager.init_app(app)
+    csrf.init_app(app)
 
     # Register blueprints.
     app.register_blueprint(auth_blueprint)

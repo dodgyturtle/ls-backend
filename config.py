@@ -10,8 +10,7 @@ class BaseConfig(object):
     DEBUG_TB_ENABLED = False
     SECRET_KEY = os.environ.get('SECRET_KEY', 'Ensure you set a secret key, this is important!')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    WTF_CSRF_ENABLED = False
-
+    WTF_CSRF_ENABLED = True
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.

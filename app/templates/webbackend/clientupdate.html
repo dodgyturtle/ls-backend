@@ -2,12 +2,14 @@
 
 {% block content %}
 <div class="container-fluid">
-  <form class="form-group" role="form" action="{{url_for('webbackend.clientupdate', client_id=client['id']) }}" method="post">
+  <form class="form-group" role="form" action="{{url_for('webbackend.clientupdate', client_id=client['id']) }}"
+    method="post">
+    {{ form.csrf_token }}
     <div class="card-header">
       <h3 class="card-title">Изменить данные клиента</h3>
     </div>
-      <div class="card-body">
-      <div class="form-group"> 
+    <div class="card-body">
+      <div class="form-group">
         <table class="table">
           <thead>
             <tr>
@@ -20,7 +22,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>      
+            <tr>
               <td>{{ form.fullname(class='form-control' ,value=client.fullname) }}</td>
               <td>{{ form.phone(class='form-control' ,value=client.phone) }}</td>
               <td>{{ form.status(class='form-control' ,checked=client.status) }}</td>
@@ -28,12 +30,10 @@
               <td>{{ form.submit(class='btn btn-danger') }}</td>
               <td>{{ form.cancel(class='btn btn-dark') }}</td>
             </tr>
-            </tbody>
+          </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
-
-

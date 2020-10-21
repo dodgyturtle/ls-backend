@@ -2,12 +2,14 @@
 
 {% block content %}
 <div class="container-fluid">
-  <form class="form-group" role="form" action="{{url_for('webbackend.clientdelete', client_id=client['id']) }}" method="post">
+  <form class="form-group" role="form" action="{{url_for('webbackend.clientdelete', client_id=client['id']) }}"
+    method="post">
+    {{ form.csrf_token }}
     <div class="card-header">
       <h3 class="card-title">Удалить клиента</h3>
     </div>
-      <div class="card-body">
-      <div class="form-group"> 
+    <div class="card-body">
+      <div class="form-group">
         <table class="table">
           <thead>
             <tr>
@@ -20,24 +22,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr>      
+            <tr>
               <td>{{ client.fullname }}</td>
               <td>{{ client.phone }}</td>
               {% if client.status %}
-                <td>Выдано</td>
+              <td>Выдано</td>
               {% else %}
-                <td>Не выдано</td>
+              <td>Не выдано</td>
               {% endif %}
               <td>{{ client.comment }}</td>
               <td>{{form.submit(class='btn btn-danger')}}</td>
               <td>{{form.cancel(class='btn btn-dark')}}</td>
             </tr>
-            </tbody>
+          </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
-
-

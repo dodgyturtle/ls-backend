@@ -3,28 +3,28 @@ from flask_wtf import FlaskForm
 from wtforms import (BooleanField, DateTimeField, FloatField, IntegerField,
                      SelectField, StringField, SubmitField, ValidationError)
 from wtforms.fields.html5 import TelField
-from wtforms.validators import DataRequired, EqualTo, Length, NumberRange
+from wtforms.validators import DataRequired, EqualTo, Length, NumberRange, Optional
 
 
 class AddProductForm(FlaskForm):
     nameproduct = StringField('Название', [DataRequired()])
-    numberproduct = StringField('Модель ', [DataRequired()])
     submit = SubmitField('Добавить')
+        
+    def validate_nameproduct(form, field):
+        if Product.query.filter_by(nameproduct=field.data).first() is not None:
+            raise ValidationError('Такой товар существует.')
     
-    def validate_numberproduct(form, field):
-        if Product.query.filter_by(numberproduct=field.data).first() is not None:
-            raise ValidationError('Такая модель товара существует.') 
-
+    
 class UpdateProductForm(FlaskForm):
     id = StringField('Id')
-    nameproduct = StringField('Название')
-    numberproduct = StringField('Модель')
+    nameproduct = StringField('Название', [DataRequired()])
     submit = SubmitField('Изменить')
     cancel = SubmitField('Отменить')
+    
+    def validate_nameproduct(form, field):
+        if Product.query.filter_by(nameproduct=field.data).first() is not None:
+            raise ValidationError('Такой товар существует.')
 
-    def validate_numberproduct(form, field):
-        if Product.query.filter_by(numberproduct=field.data).first() is not None:
-            raise ValidationError('Такая модель товара существует.') 
 
 class DeleteForm(FlaskForm):
     submit = SubmitField('Удалить')
@@ -33,7 +33,7 @@ class DeleteForm(FlaskForm):
 
 class AddClientForm(FlaskForm):
     fullname = StringField('ФИО')
-    phone = IntegerField('Номер телефона', [DataRequired(), NumberRange(min=89000000000, max=89999999999, message = "Введите номер телефона начиная с '8', без пробелов и символов '+' и '-'.")])
+    phone = IntegerField('Номер телефона', [Optional()])
     status = BooleanField('Статус')
     comment = StringField('Комментарий',[Length(0, 200)])
     submit = SubmitField('Добавить')
@@ -42,21 +42,22 @@ class AddClientForm(FlaskForm):
         if Client.query.filter_by(phone=field.data).first() is not None:
             raise ValidationError('Такой клиент существует.')
 
+
 class UpdateClientForm(FlaskForm):
     fullname = StringField('ФИО')
-    phone = IntegerField('Номер телефона', [DataRequired(), NumberRange(min=89000000000, max=89999999999, message = "Введите номер телефона начиная с '8', без пробелов и символов '+' и '-'.")])
+    phone = IntegerField('Номер телефона', [Optional()])
     status = BooleanField('Статус')
     comment = StringField('Комментарий',[Length(0, 200)])
     submit = SubmitField('Изменить')
     cancel = SubmitField('Отменить')
+
 
 class AddSaleForm(FlaskForm):
-
     client_id = SelectField("Клиент", coerce=int)
     product_id = SelectField("Товар", coerce=int)
-    quantity = IntegerField("Количество")
-    price = FloatField("Стоимость")
-    sumprice = FloatField("Итогова сумма")
+    quantity = IntegerField("Количество", [DataRequired(), Optional()])
+    price = FloatField("Стоимость", [DataRequired(), Optional()])
+    sumprice = FloatField("Итогова сумма", [Optional()])
     status = BooleanField('Статус')
     comment = StringField('Комментарий',[Length(0, 200)])
     submit = SubmitField('Добавить')
@@ -66,50 +67,47 @@ class AddSaleForm(FlaskForm):
         if balance_quantity < form.quantity.data:
             raise ValidationError('Данный товар отсутствует на складе в таком количестве.')
 
-class UpdateSaleForm(FlaskForm):
 
+class UpdateSaleForm(FlaskForm):
     client_id = SelectField("Клиент", coerce=int)
     product_id = SelectField("Товар", coerce=int)
-    quantity = IntegerField("Количество")
-    price = FloatField("Стоимость")
-    sumprice = FloatField("Итогова сумма")
+    quantity = IntegerField("Количество", [DataRequired(), Optional()])
+    price = FloatField("Стоимость", [DataRequired(), Optional()])
+    sumprice = FloatField("Итогова сумма", [Optional()])
     status = BooleanField('Статус')
     comment = StringField('Комментарий',[Length(0, 200)])
     submit = SubmitField('Изменить')
     cancel = SubmitField('Отменить')
 
-    def validate_quantity(form, field):
-        balance_quantity = Balance.query.filter_by(product_id=form.product_id.data).first().quantity
-        if balance_quantity < form.quantity.data:
-            raise ValidationError('Данный товар отсутствует на складе в таком количестве.')
 
 class AddComingForm(FlaskForm):
-
     product_id = SelectField("Товар", coerce=int)
-    quantity = IntegerField("Количество")
-    price = FloatField("Стоимость")
-    sumquantity = IntegerField("Итоговое количество")
+    quantity = IntegerField("Количество", [DataRequired(), Optional()])
+    price = FloatField("Стоимость", [DataRequired(), Optional()])
+    sumquantity = IntegerField("Итоговое количество", [Optional()])
     sumprice = FloatField("Итогова сумма")
     comment = StringField('Комментарий',[Length(0, 200)])
     submit = SubmitField('Добавить')
 
-class UpdateComingForm(FlaskForm):
 
+class UpdateComingForm(FlaskForm):
     product_id = SelectField("Товар", coerce=int)
-    quantity = IntegerField("Количество")
-    price = FloatField("Стоимость")
-    sumprice = FloatField("Итогова сумма")
+    quantity = IntegerField("Количество", [DataRequired(), Optional()])
+    price = FloatField("Стоимость", [DataRequired(), Optional()])
+    sumprice = FloatField("Итогова сумма", [Optional()])
     comment = StringField('Комментарий', [Length(0, 200)])
     submit = SubmitField('Изменить')
     cancel = SubmitField('Отменить')
 
+
 class UpdateBalanceForm(FlaskForm):
     product_id = SelectField("Товар", coerce=int)
-    quantity = IntegerField("Количество")
-    price = FloatField("Стоимость")
-    sumprice = FloatField("Итогова сумма")
+    quantity = IntegerField("Количество", [DataRequired(), Optional()])
+    price = FloatField("Стоимость", [DataRequired(), Optional()])
+    sumprice = FloatField("Итогова сумма", [Optional()])
     submit = SubmitField('Изменить')
     cancel = SubmitField('Отменить')
+
 
 class AddStockForm(FlaskForm):
     namestock = StringField('Название акции', [Length(0, 200)])

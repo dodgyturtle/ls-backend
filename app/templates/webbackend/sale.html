@@ -89,6 +89,21 @@
             {% endfor %}
             {% endif %}
           </tbody>
+          <tbody>
+            <tr>
+              <th></th>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><p class="text-right font-weight-bold ">Общая сумма:</p></td>
+              <td><p class="text-left font-weight-bold ">{{ sales | sum(attribute='sumprice') }}</p></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

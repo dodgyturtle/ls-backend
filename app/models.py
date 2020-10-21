@@ -35,8 +35,7 @@ class Stock(db.Model, ModelMixin, SerializerMixin):
 class Product(db.Model, ModelMixin, SerializerMixin):
     serialize_rules = ('-sales', '-comings', '-balances' )
     id = db.Column(db.Integer, primary_key=True)
-    nameproduct = db.Column(db.String(100))
-    numberproduct = db.Column(db.String(100))
+    nameproduct = db.Column(db.String(200))
     sale = db.relationship('Sale', backref='product')
     coming = db.relationship('Coming', backref='product')
     balance = db.relationship('Balance', backref='product')

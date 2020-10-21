@@ -13,10 +13,6 @@
           <p class="p-3 mb-2">{{form.nameproduct.label}}</p>
           <p class="p-3 mb-2">{{form.nameproduct(class='form-control')}}</p>
         </div>
-        <div class="form-group mx-sm-3 mb-2">
-          <p class="p-3 mb-2">{{form.numberproduct.label}}</p>
-          <p class="p-3 mb-2">{{form.numberproduct(class='form-control')}}</p>
-        </div>
         <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
       </div>
     </div>
@@ -30,7 +26,6 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Название</th>
-              <th scope="col">Модель</th>
               <th scope="col">Редактировать</th>
               <th scope="col">Удалить</th>
             </tr>
@@ -41,7 +36,6 @@
             <tr>
               <th scope="row">{{loop.index}}</th>
               <td>{{ product.nameproduct }}</td>
-              <td>{{ product.numberproduct }}</td>
               <td><a href="{{url_for('webbackend.productupdate', product_id=product.id) }}"><span
                     class="badge badge-warning">Редактировать</span></a></td>
               <td> <a href="{{url_for('webbackend.productdelete', product_id=product.id) }}"><span

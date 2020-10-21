@@ -1,3 +1,4 @@
+import json
 from app import db
 from app.models import Balance, Client, Coming, Product, Sale, Stock
 from app.webbackend.forms import (AddClientForm, AddComingForm, AddProductForm,
@@ -127,6 +128,8 @@ def sale():
     form = AddSaleForm(request.form)
     form.client_id.choices = [(client.id, client.fullname) for client in Client.query.all()]
     form.product_id.choices = [(product.id, product.nameproduct) for product in Product.query.all()]
+    all_balance_price = { balance.product_id: balance.price for balance in Balance.query.all() }
+    all_price_json = json.dumps(all_balance_price)
     if form.validate_on_submit():
         sale_db = Sale(
             client_id = form.client_id.data,
@@ -155,7 +158,7 @@ def sale():
     elif form.is_submitted():
         flash(f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
     sales = Sale.query.all()
-    return render_template('webbackend/sale.html', form=form, sales=sales)
+    return render_template('webbackend/sale.html', form=form, sales=sales, all_price=all_price_json)
 
 
 @web_blueprint.route('/saleupdate/<int:sale_id>', methods=['GET', 'POST'])

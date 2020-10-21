@@ -6,47 +6,47 @@
     <div class="card-header">
       <h3 class="card-title">Продажа</h3>
     </div>
-      <div class="card-body">
-        <div class = "form-inline">
-          <div class="form-group mb-2">
-            <p class="p-3 mb-2">{{form.client_id.label}}</p>
-            <p class="p-3 mb-2">{{form.client_id(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.product_id.label}}</p>
-            <p class="p-3 mb-2">{{form.product_id(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.quantity.label}}</p>
-            <p class="p-3 mb-2">{{form.quantity(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.price.label}}</p>
-            <p class="p-3 mb-2">{{form.price(class='form-control')}}</p>
-          </div>
+    <div class="card-body">
+      <div class="form-inline">
+        <div class="form-group mb-2">
+          <p class="p-3 mb-2">{{form.client_id.label}}</p>
+          <p class="p-3 mb-2">{{form.client_id(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.product_id.label}}</p>
+          <p class="p-3 mb-2">{{form.product_id(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.quantity.label}}</p>
+          <p class="p-3 mb-2">{{form.quantity(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.price.label}}</p>
+          <p class="p-3 mb-2">{{form.price(class='form-control')}}</p>
+        </div>
 
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.sumprice.label}}</p>
-            <p class="p-3 mb-2">{{form.sumprice(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.status.label}}</p>
-            <p class="p-3 mb-2">{{form.status(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.comment.label}}</p>
-            <p class="p-3 mb-2">{{form.comment(class='form-control')}}</p>
-          </div>
-          <div>
-            <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
-          </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.sumprice.label}}</p>
+          <p class="p-3 mb-2">{{form.sumprice(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.status.label}}</p>
+          <p class="p-3 mb-2">{{form.status(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.comment.label}}</p>
+          <p class="p-3 mb-2">{{form.comment(class='form-control')}}</p>
+        </div>
+        <div>
+          <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
         </div>
       </div>
+    </div>
     <div class="card-header">
       <h3 class="card-title">Перечень проданных товаров</h3>
     </div>
-      <div class="card-body">
-      <div class="form-group" > 
+    <div class="card-body">
+      <div class="form-group">
         <table class="table ">
           <thead>
             <tr>
@@ -66,7 +66,7 @@
           <tbody>
             {% if sales %}
             {% for sale in sales %}
-            <tr>      
+            <tr>
               <th scope="row">{{loop.index}}</th>
               <td>{{ sale.date.strftime('%d-%m-%Y %H:%M') }}</td>
               <td>{{ sale.client.fullname }}</td>
@@ -75,36 +75,58 @@
               <td>{{ sale.price }}</td>
               <td>{{ sale.sumprice }}</td>
               {% if sale.status %}
-                <td span class="badge badge-success">Выдано</td>
+              <td span class="badge badge-success">Выдано</td>
               {% else %}
-                <td span class="badge badge-info" >Не выдано</td>
+              <td span class="badge badge-info">Не выдано</td>
               {% endif %}
               <td>{{ sale.comment }}</td>
-              <td><a href="{{url_for('webbackend.saleupdate', sale_id=sale.id) }}"><span class="badge badge-warning">Редактировать</span></a></td>
-              <td><a href="{{ url_for('webbackend.saledelete', sale_id=sale.id) }}"><span class="badge badge-danger">Удалить</span></a></td>
+              <td><a href="{{url_for('webbackend.saleupdate', sale_id=sale.id) }}"><span
+                    class="badge badge-warning">Редактировать</span></a></td>
+              <td><a href="{{ url_for('webbackend.saledelete', sale_id=sale.id) }}"><span
+                    class="badge badge-danger">Удалить</span></a></td>
             </tr>
             {% endfor %}
             {% endif %}
-            </tbody>
+          </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </form>
 </div>
 <script>
-  price.addEventListener('keyup', () => {
+  function isEmpty(str) {
+    if (str.trim() == '')
+      return true;
+
+    return false;
+  }
+  function get_price() {
+    var data = JSON.parse('{{ all_price|safe }}');
+    var product_id = $('#product_id').val();
+    if (product_id in data) {
+      price = data[product_id];
+    }
+    else {
+      price = 0
+    }
+    document.getElementById('price').value = price;;
+  }
+
+  function get_sum() {
     var jsprice = $('#price').val();
     var jsquantity = $('#quantity').val();
 
-    if (isNaN(jsprice) || isNaN(jsquantity) || (jsquantity.indexOf(',') != -1)) {
+    if (isEmpty(jsquantity) || isEmpty(jsprice) || isNaN(jsprice) || isNaN(jsquantity) || (jsquantity.indexOf(',') != -1)) {
       var jssumprice = 0;
     }
     else {
       var jssumprice = parseFloat(jsprice) * parseFloat(jsquantity);
     }
     document.getElementById('sumprice').value = jssumprice.toFixed(2);
-    });
+  }
+  window.onload = get_price;
+  document.getElementById('product_id').onchange = get_price;
+  quantity.addEventListener('keyup', get_sum);
+  price.addEventListener('keyup', get_sum);      
 </script>
 {% endblock %}
-
-

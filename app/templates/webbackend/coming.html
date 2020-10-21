@@ -6,38 +6,38 @@
     <div class="card-header">
       <h3 class="card-title">Приход</h3>
     </div>
-      <div class="card-body">
-        <div class = "form-inline">
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.product_id.label}}</p>
-            <p class="p-3 mb-2">{{form.product_id(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.quantity.label}}</p>
-            <p class="p-3 mb-2">{{form.quantity(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.price.label}}</p>
-            <p class="p-3 mb-2">{{form.price(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.sumprice.label}}</p>
-            <p class="p-3 mb-2">{{form.sumprice(class='form-control')}}</p>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <p class="p-3 mb-2">{{form.comment.label}}</p>
-            <p class="p-3 mb-2">{{form.comment(class='form-control')}}</p>
-          </div>
-          <div>
-            <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
-          </div>
+    <div class="card-body">
+      <div class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.product_id.label}}</p>
+          <p class="p-3 mb-2">{{form.product_id(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.quantity.label}}</p>
+          <p class="p-3 mb-2">{{form.quantity(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.price.label}}</p>
+          <p class="p-3 mb-2">{{form.price(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.sumprice.label}}</p>
+          <p class="p-3 mb-2">{{form.sumprice(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.comment.label}}</p>
+          <p class="p-3 mb-2">{{form.comment(class='form-control')}}</p>
+        </div>
+        <div>
+          <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
         </div>
       </div>
+    </div>
     <div class="card-header">
       <h3 class="card-title">Перечень</h3>
     </div>
-      <div class="card-body">
-      <div class="form-group"> 
+    <div class="card-body">
+      <div class="form-group">
         <table class="table">
           <thead>
             <tr>
@@ -55,7 +55,7 @@
           <tbody>
             {% if comings %}
             {% for coming in comings %}
-            <tr>      
+            <tr>
               <th scope="row">{{loop.index}}</th>
               <td>{{ coming.date.strftime('%d-%m-%Y %H:%M') }}</td>
               <td>{{ coming.product.nameproduct }}</td>
@@ -63,31 +63,38 @@
               <td>{{ coming.price }}</td>
               <td>{{ coming.sumprice }}</td>
               <td>{{ coming.comment }}</td>
-              <td><a href="{{url_for('webbackend.comingupdate', coming_id=coming.id) }}"><span class="badge badge-warning">Редактировать</span></a></td>
-              <td><a href="{{ url_for('webbackend.comingdelete', coming_id=coming.id) }}"><span class="badge badge-danger">Удалить</span></a></td>
+              <td><a href="{{url_for('webbackend.comingupdate', coming_id=coming.id) }}"><span
+                    class="badge badge-warning">Редактировать</span></a></td>
+              <td><a href="{{ url_for('webbackend.comingdelete', coming_id=coming.id) }}"><span
+                    class="badge badge-danger">Удалить</span></a></td>
             </tr>
             {% endfor %}
             {% endif %}
-            </tbody>
+          </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </form>
 </div>
 <script>
-  price.addEventListener('keyup', () => {
+  function isEmpty(str) {
+    if (str.trim() == '')
+      return true;
+
+    return false;
+  }
+  function get_sum() {
     var jsprice = $('#price').val();
     var jsquantity = $('#quantity').val();
-
-    if (isNaN(jsprice) || isNaN(jsquantity) || (jsquantity.indexOf(',') != -1)) {
+    if (isEmpty(jsquantity) || isEmpty(jsprice) || isNaN(jsprice) || isNaN(jsquantity) || (jsquantity.indexOf(',') != -1)) {
       var jssumprice = 0;
     }
     else {
       var jssumprice = parseFloat(jsprice) * parseFloat(jsquantity);
     }
     document.getElementById('sumprice').value = jssumprice.toFixed(2);
-    });
+  }
+  quantity.addEventListener('keyup', get_sum);
+  price.addEventListener('keyup', get_sum);  
 </script>
 {% endblock %}
-
-

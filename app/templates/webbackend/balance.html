@@ -2,12 +2,12 @@
 
 {% block content %}
 <div class="container-fluid">
-  <form class="form-group" role="form" action="{{ url_for('webbackend.balance') }}" method="post">
+  <form class="form-group" role="form" action="{{ url_for('webbackend.balance') }}">
     <div class="card-header">
       <h3 class="card-title">Остатки</h3>
     </div>
-      <div class="card-body">
-      <div class="form-group"> 
+    <div class="card-body">
+      <div class="form-group">
         <table class="table">
           <thead>
             <tr>
@@ -24,24 +24,24 @@
           <tbody>
             {% if balances %}
             {% for balance in balances %}
-            <tr>      
+            <tr>
               <th scope="row">{{loop.index}}</th>
               <td>{{ balance.product.nameproduct }}</td>
               <td>{{ balance.quantity }}</td>
               <td>{{ balance.price }}</td>
               <td>{{ balance.sumprice }}</td>
               <td>{{ balance.comment }}</td>
-              <td><a href="{{ url_for('webbackend.balanceupdate', balance_id=balance.id) }}"><span class="badge badge-warning">Редактировать</span></a></td>
-              <td><a href="{{ url_for('webbackend.balancedelete', balance_id=balance.id) }}"><span class="badge badge-danger">Удалить</span></a></td>
+              <td><a href="{{ url_for('webbackend.balanceupdate', balance_id=balance.id) }}"><span
+                    class="badge badge-warning">Редактировать</span></a></td>
+              <td><a href="{{ url_for('webbackend.balancedelete', balance_id=balance.id) }}"><span
+                    class="badge badge-danger">Удалить</span></a></td>
             </tr>
             {% endfor %}
             {% endif %}
-            </tbody>
+          </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
-
-

@@ -2,12 +2,14 @@
 
 {% block content %}
 <div class="container-fluid">
-  <form class="form-group" role="form" action="{{ url_for('webbackend.comingdelete', coming_id=coming['id']) }}" method="post">
+  <form class="form-group" role="form" action="{{ url_for('webbackend.comingdelete', coming_id=coming['id']) }}"
+    method="post">
+    {{ form.csrf_token }}
     <div class="card-header">
       <h3 class="card-title">Удалить</h3>
     </div>
-      <div class="card-body">
-      <div class="form-group"> 
+    <div class="card-body">
+      <div class="form-group">
         <table class="table">
           <thead>
             <tr>
@@ -22,7 +24,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>      
+            <tr>
               <td>{{ coming.date.strftime('%d-%m-%Y %H:%M') }}</td>
               <td>{{ coming.product.nameproduct }}</td>
               <td>{{ coming.quantity }}</td>
@@ -32,12 +34,10 @@
               <td>{{form.submit(class='btn btn-danger')}}</td>
               <td>{{form.cancel(class='btn btn-dark')}}</td>
             </tr>
-            </tbody>
+          </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
-
-

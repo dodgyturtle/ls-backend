@@ -2,12 +2,14 @@
 
 {% block content %}
 <div class="container-fluid">
-  <form class="form-group" role="form" action="{{url_for('webbackend.stockupdate', stock_id=stock['id']) }}" method="post">
+  <form class="form-group" role="form" action="{{url_for('webbackend.stockupdate', stock_id=stock['id']) }}"
+    method="post">
+    {{ form.csrf_token }}
     <div class="card-header">
       <h3 class="card-title">Изменить товар</h3>
     </div>
-      <div class="card-body">
-      <div class="form-group"> 
+    <div class="card-body">
+      <div class="form-group">
         <table class="table">
           <thead>
             <tr>
@@ -26,16 +28,14 @@
               <td>{{form.namestock(class='form-control', value = stock.namestock)}}</td>
               <td>{{form.nameproduct(class='form-control', value = stock.nameproduct)}}</td>
               <td>{{form.quantity(class='form-control', value = stock.quantity)}}</td>
-              <td>{{form.comment(class='form-control', value = stock.comment)}}</td>      
+              <td>{{form.comment(class='form-control', value = stock.comment)}}</td>
               <td>{{form.submit(class='btn btn-danger')}}</td>
               <td>{{form.cancel(class='btn btn-dark')}}</td>
             </tr>
-            </tbody>
+          </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
-
-

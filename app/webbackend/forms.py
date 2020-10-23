@@ -1,9 +1,9 @@
 from app.models import Balance, Client, Coming, Product, Sale, Stock
 from flask_wtf import FlaskForm
-from wtforms import (BooleanField, DateTimeField, FloatField, IntegerField,
+from wtforms import (BooleanField, DateTimeField, DecimalField, IntegerField,
                      SelectField, StringField, SubmitField, ValidationError)
-from wtforms.fields.html5 import TelField
-from wtforms.validators import DataRequired, EqualTo, Length, NumberRange, Optional
+from wtforms.validators import (DataRequired, EqualTo, Length, NumberRange,
+                                Optional)
 
 
 class AddProductForm(FlaskForm):
@@ -56,8 +56,8 @@ class AddSaleForm(FlaskForm):
     client_id = SelectField("Клиент", coerce=int)
     product_id = SelectField("Товар", coerce=int)
     quantity = IntegerField("Количество", [DataRequired(), Optional()])
-    price = FloatField("Стоимость", [DataRequired(), Optional()])
-    sumprice = FloatField("Итогова сумма", [Optional()])
+    price = DecimalField("Стоимость", [DataRequired(), Optional()])
+    sumprice = DecimalField("Итогова сумма", [Optional()])
     status = BooleanField('Статус')
     comment = StringField('Комментарий',[Length(0, 200)])
     submit = SubmitField('Добавить')
@@ -72,8 +72,8 @@ class UpdateSaleForm(FlaskForm):
     client_id = SelectField("Клиент", coerce=int)
     product_id = SelectField("Товар", coerce=int)
     quantity = IntegerField("Количество", [DataRequired(), Optional()])
-    price = FloatField("Стоимость", [DataRequired(), Optional()])
-    sumprice = FloatField("Итогова сумма", [Optional()])
+    price = DecimalField("Стоимость", [DataRequired(), Optional()])
+    sumprice = DecimalField("Итогова сумма", [Optional()])
     status = BooleanField('Статус')
     comment = StringField('Комментарий',[Length(0, 200)])
     submit = SubmitField('Изменить')
@@ -83,9 +83,9 @@ class UpdateSaleForm(FlaskForm):
 class AddComingForm(FlaskForm):
     product_id = SelectField("Товар", coerce=int)
     quantity = IntegerField("Количество", [DataRequired(), Optional()])
-    price = FloatField("Стоимость", [DataRequired(), Optional()])
+    price = DecimalField("Стоимость", [DataRequired(), Optional()])
     sumquantity = IntegerField("Итоговое количество", [Optional()])
-    sumprice = FloatField("Итогова сумма")
+    sumprice = DecimalField("Итогова сумма")
     comment = StringField('Комментарий',[Length(0, 200)])
     submit = SubmitField('Добавить')
 
@@ -93,8 +93,8 @@ class AddComingForm(FlaskForm):
 class UpdateComingForm(FlaskForm):
     product_id = SelectField("Товар", coerce=int)
     quantity = IntegerField("Количество", [DataRequired(), Optional()])
-    price = FloatField("Стоимость", [DataRequired(), Optional()])
-    sumprice = FloatField("Итогова сумма", [Optional()])
+    price = DecimalField("Стоимость", [DataRequired(), Optional()])
+    sumprice = DecimalField("Итогова сумма", [Optional()])
     comment = StringField('Комментарий', [Length(0, 200)])
     submit = SubmitField('Изменить')
     cancel = SubmitField('Отменить')
@@ -103,8 +103,8 @@ class UpdateComingForm(FlaskForm):
 class UpdateBalanceForm(FlaskForm):
     product_id = SelectField("Товар", coerce=int)
     quantity = IntegerField("Количество", [DataRequired(), Optional()])
-    price = FloatField("Стоимость", [DataRequired(), Optional()])
-    sumprice = FloatField("Итогова сумма", [Optional()])
+    price = DecimalField("Стоимость", [DataRequired(), Optional()])
+    sumprice = DecimalField("Итогова сумма", [Optional()])
     submit = SubmitField('Изменить')
     cancel = SubmitField('Отменить')
 

@@ -1,6 +1,7 @@
-import json
+import simplejson
 from app import db
 from app.models import Balance, Client, Coming, Product, Sale, Stock
+from decimal import Decimal
 from app.webbackend.forms import (AddClientForm, AddComingForm, AddProductForm,
                                   AddSaleForm, AddStockForm, DeleteForm,
                                   UpdateBalanceForm, UpdateClientForm,
@@ -141,7 +142,7 @@ def sale():
                                for product in Product.query.all()]
     all_balance_price = {
         balance.product_id: balance.price for balance in Balance.query.all()}
-    all_price_json = json.dumps(all_balance_price)
+    all_price_json = simplejson.dumps(all_balance_price)
     if form.validate_on_submit():
         sale_db = Sale(
             client_id=form.client_id.data,
@@ -158,7 +159,7 @@ def sale():
                 Balance.product_id == sale_db.product_id).first()
         if balance_db:
             new_quantity = balance_db.quantity - sale_db.quantity
-            new_sumprice = balance_db.price * float(new_quantity)
+            new_sumprice = balance_db.price * Decimal(new_quantity)
             Balance.query.filter(Balance.product_id == sale_db.product_id).update(
                 {
                     'quantity': new_quantity,
@@ -248,7 +249,7 @@ def coming():
         if balance_db:
             new_quantity = balance_db.quantity + coming_db.quantity
             new_price = coming_db.price
-            new_sumprice = new_price * float(new_quantity)
+            new_sumprice = new_price * Decimal(new_quantity)
             Balance.query.filter(Balance.product_id == coming_db.product_id).update(
                 {
                     'quantity': new_quantity,

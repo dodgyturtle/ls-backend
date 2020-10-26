@@ -390,6 +390,7 @@ def stock():
             namestock=form.namestock.data,
             nameproduct=form.nameproduct.data,
             quantity=form.quantity.data,
+            status=form.status.data,
             comment=form.comment.data,
         )
         stock_db.save()
@@ -416,6 +417,7 @@ def stockupdate(stock_id: int):
                     'namestock': form.namestock.data,
                     'nameproduct': form.nameproduct.data,
                     'quantity': form.quantity.data,
+                    'status': form.status.data,
                     'comment': form.comment.data,
                 }
             )

@@ -116,6 +116,7 @@ class AddStockForm(FlaskForm):
     nameproduct = StringField('Наименование товара', [Length(0, 200)])
     quantity = IntegerField("Количество")
     comment = StringField('Комментарий', [Length(0, 200)])
+    status = BooleanField('Статус')
     submit = SubmitField('Добавить')
     
 
@@ -126,5 +127,6 @@ class UpdateStockForm(FlaskForm):
     quantity = IntegerField("Количество")
     comment = StringField('Комментарий', [Length(0, 200)])
     submit = SubmitField('Изменить')
+    status = BooleanField('Статус')
     cancel = SubmitField('Отменить')
 

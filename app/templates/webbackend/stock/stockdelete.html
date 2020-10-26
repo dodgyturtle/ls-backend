@@ -18,6 +18,7 @@
               <th scope="col">Клиент</th>
               <th scope="col">Наименование товара</th>
               <th scope="col">Количество</th>
+              <th scope="col">Статус</th>
               <th scope="col">Комментарий</th>
               <th scope="col">Удалить</th>
               <th scope="col">Отменить</th>
@@ -30,6 +31,11 @@
               <td>{{ stock.namestock }}</td>
               <td>{{ stock.nameproduct }}</td>
               <td>{{ stock.quantity }}</td>
+              {% if stock.status %}
+              <td span class="badge badge-success">Выдано</td>
+              {% else %}
+              <td span class="badge badge-info">Не выдано</td>
+              {% endif %}
               <td>{{ stock.comment }}</td>
               <td>{{form.submit(class='btn btn-danger')}}</td>
               <td>{{form.cancel(class='btn btn-dark')}}</td>

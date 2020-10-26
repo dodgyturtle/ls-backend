@@ -63,7 +63,7 @@ class AddSaleForm(FlaskForm):
     submit = SubmitField('Добавить')
 
     def validate_quantity(form, field):
-        balance_quantity = Balance.query.filter_by(product_id=form.product_id.data).first().quantity
+        balance_quantity = Balance.query.filter_by(product_id=form.product_id.data).first().current_quantity
         if balance_quantity < form.quantity.data:
             raise ValidationError('Данный товар отсутствует на складе в таком количестве.')
 
@@ -103,6 +103,7 @@ class UpdateComingForm(FlaskForm):
 class UpdateBalanceForm(FlaskForm):
     product_id = SelectField("Товар", coerce=int)
     quantity = IntegerField("Количество", [DataRequired(), Optional()])
+    current_quantity = IntegerField("Текущее количество", [DataRequired(), Optional()])
     price = DecimalField("Стоимость", [DataRequired(), Optional()])
     sumprice = DecimalField("Итогова сумма", [Optional()])
     submit = SubmitField('Изменить')
@@ -110,6 +111,7 @@ class UpdateBalanceForm(FlaskForm):
 
 
 class AddStockForm(FlaskForm):
+    client_id = SelectField("Клиент", coerce=int)
     namestock = StringField('Название акции', [Length(0, 200)])
     nameproduct = StringField('Наименование товара', [Length(0, 200)])
     quantity = IntegerField("Количество")
@@ -118,6 +120,7 @@ class AddStockForm(FlaskForm):
     
 
 class UpdateStockForm(FlaskForm):
+    client_id = SelectField("Клиент", coerce=int)
     namestock = StringField('Название акции', [Length(0, 200)])
     nameproduct = StringField('Наименование товара', [Length(0, 200)])
     quantity = IntegerField("Количество")

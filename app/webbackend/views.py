@@ -158,11 +158,11 @@ def sale():
             balance_db = Balance.query.filter(
                 Balance.product_id == sale_db.product_id).first()
         if balance_db:
-            new_quantity = balance_db.quantity - sale_db.quantity
+            new_quantity = balance_db.current_quantity - sale_db.quantity
             new_sumprice = balance_db.price * Decimal(new_quantity)
             Balance.query.filter(Balance.product_id == sale_db.product_id).update(
                 {
-                    'quantity': new_quantity,
+                    'current_quantity': new_quantity,
                     'sumprice': new_sumprice,
                 }
             )
@@ -247,12 +247,13 @@ def coming():
             balance_db = Balance.query.filter(
                 Balance.product_id == coming_db.product_id).first()
         if balance_db:
-            new_quantity = balance_db.quantity + coming_db.quantity
+            new_quantity = balance_db.current_quantity + coming_db.quantity
             new_price = coming_db.price
             new_sumprice = new_price * Decimal(new_quantity)
             Balance.query.filter(Balance.product_id == coming_db.product_id).update(
                 {
                     'quantity': new_quantity,
+                    'current_quantity': new_quantity,
                     'price': new_price,
                     'sumprice': new_sumprice,
                 }
@@ -262,6 +263,7 @@ def coming():
             balance_db = Balance(
                 product_id=form.product_id.data,
                 quantity=form.quantity.data,
+                current_quantity = form.quantity.data,
                 price=form.price.data,
                 sumprice=form.sumprice.data,
                 comment=form.comment.data,
@@ -380,8 +382,11 @@ def balancedelete(balance_id: int):
 @login_required
 def stock():
     form = AddStockForm(request.form)
+    form.client_id.choices = [(client.id, client.fullname)
+                              for client in Client.query.all()]
     if form.validate_on_submit():
         stock_db = Stock(
+            client_id=form.client_id.data,
             namestock=form.namestock.data,
             nameproduct=form.nameproduct.data,
             quantity=form.quantity.data,
@@ -400,11 +405,14 @@ def stock():
 @web_blueprint.route('/stockupdate/<int:stock_id>', methods=['GET', 'POST'])
 def stockupdate(stock_id: int):
     form = UpdateStockForm(request.form)
+    form.client_id.choices = [(client.id, client.fullname)
+                              for client in Client.query.all()]
     stock_db = Stock.query.filter(Stock.id == stock_id).first()
     if form.is_submitted():
         if form.submit.data and form.validate():
             Stock.query.filter(Stock.id == stock_id).update(
                 {
+                    'client_id': form.client_id.data,
                     'namestock': form.namestock.data,
                     'nameproduct': form.nameproduct.data,
                     'quantity': form.quantity.data,

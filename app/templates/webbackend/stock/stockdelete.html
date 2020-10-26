@@ -15,6 +15,7 @@
             <tr>
               <th scope="col">Дата и Время</th>
               <th scope="col">Название акции</th>
+              <th scope="col">Клиент</th>
               <th scope="col">Наименование товара</th>
               <th scope="col">Количество</th>
               <th scope="col">Комментарий</th>
@@ -25,6 +26,7 @@
           <tbody>
             <tr>
               <td>{{ stock.date.strftime('%d-%m-%Y %H:%M') }}</td>
+              <td>{{ stock.client.fullname }}</td>
               <td>{{ stock.namestock }}</td>
               <td>{{ stock.nameproduct }}</td>
               <td>{{ stock.quantity }}</td>

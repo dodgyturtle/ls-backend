@@ -15,6 +15,7 @@
             <tr>
               <th scope="col">Товар</th>
               <th scope="col">Количество</th>
+              <th scope="col">Текущее количество</th>
               <th scope="col">Стоимость</th>
               <th scope="col">Итоговая сумма</th>
               <th scope="col">Изменить</th>
@@ -23,8 +24,10 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{ form.product_id(class='form-control' ,value=balance.product_id) }}</td>
+              {% set default_product_id = form.product_id.process_data(balance.product_id) %}
+              <td>{{ form.product_id(class='form-control') }}</td>
               <td>{{ form.quantity(class='form-control' ,value=balance.quantity) }}</td>
+              <td>{{ form.current_quantity(class='form-control' ,value=balance.current_quantity) }}</td>
               <td>{{ form.price(class='form-control' ,value=balance.price) }}</td>
               <td>{{ form.sumprice(class='form-control' ,value=balance.sumprice) }}</td>
               <td>{{ form.submit(class='btn btn-danger') }}</td>

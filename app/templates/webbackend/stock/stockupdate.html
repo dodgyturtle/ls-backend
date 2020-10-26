@@ -14,6 +14,7 @@
           <thead>
             <tr>
               <th scope="col">Дата и Время</th>
+              <th scope="col">Клиент</th>
               <th scope="col">Название акции</th>
               <th scope="col">Наименование товара</th>
               <th scope="col">Количество</th>
@@ -24,13 +25,15 @@
           </thead>
           <tbody>
             <tr>
+              {% set default_client_id = form.client_id.process_data(stock.client_id) %}
               <td>{{ stock.date.strftime('%d-%m-%Y %H:%M') }}</td>
-              <td>{{form.namestock(class='form-control', value = stock.namestock)}}</td>
-              <td>{{form.nameproduct(class='form-control', value = stock.nameproduct)}}</td>
-              <td>{{form.quantity(class='form-control', value = stock.quantity)}}</td>
-              <td>{{form.comment(class='form-control', value = stock.comment)}}</td>
-              <td>{{form.submit(class='btn btn-danger')}}</td>
-              <td>{{form.cancel(class='btn btn-dark')}}</td>
+              <td>{{ form.client_id(class='form-control') }}</td>
+              <td>{{ form.namestock(class='form-control', value=stock.namestock) }}</td>
+              <td>{{ form.nameproduct(class='form-control', value = stock.nameproduct) }}</td>
+              <td>{{ form.quantity(class='form-control', value = stock.quantity) }}</td>
+              <td>{{ form.comment(class='form-control', value = stock.comment) }}</td>
+              <td>{{ form.submit(class='btn btn-danger') }}</td>
+              <td>{{ form.cancel(class='btn btn-dark') }}</td>
             </tr>
           </tbody>
         </table>

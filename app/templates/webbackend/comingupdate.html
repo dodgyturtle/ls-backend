@@ -24,11 +24,12 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{ form.product_id(class='form-control' ,value=coming.product_id) }}</td>
-              <td>{{ form.quantity(class='form-control' ,value=coming.quantity) }}</td>
-              <td>{{ form.price(class='form-control' ,value=coming.price) }}</td>
-              <td>{{ form.sumprice(class='form-control' ,value=coming.sumprice) }}</td>
-              <td>{{ form.comment(class='form-control' ,value=coming.comment) }}</td>
+              {% set default_product_id = form.product_id.process_data(coming.product_id) %}
+              <td>{{ form.product_id(class='form-control') }}</td>
+              <td>{{ form.quantity(class='form-control', value=coming.quantity) }}</td>
+              <td>{{ form.price(class='form-control', value=coming.price) }}</td>
+              <td>{{ form.sumprice(class='form-control', value=coming.sumprice) }}</td>
+              <td>{{ form.comment(class='form-control', value=coming.comment) }}</td>
               <td>{{ form.submit(class='btn btn-danger') }}</td>
               <td>{{ form.cancel(class='btn btn-dark') }}</td>
             </tr>

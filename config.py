@@ -21,9 +21,9 @@ class DevelopmentConfig(BaseConfig):
     """Development configuration."""
 
     DEBUG = True
-    #SQLALCHEMY_DATABASE_URI = os.environ.get(
-    #    'DEVEL_DATABASE_URL', 'sqlite:///' + os.path.join(base_dir, 'database-devel.db'))
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:123@localhost/ls'
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        'DEVEL_DATABASE_URL', 'sqlite:///' + os.path.join(base_dir, 'database-devel.db'))
+    #SQLALCHEMY_DATABASE_URI = 'mysql://root:123@localhost/ls'
 
 
 class TestingConfig(BaseConfig):
@@ -38,9 +38,9 @@ class TestingConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     """Production configuration."""
 
-    #SQLALCHEMY_DATABASE_URI = os.environ.get(
-    #    'DATABASE_URL', 'sqlite:///' + os.path.join(base_dir, 'database.db'))
-    SQLALCHEMY_DATABASE_URI = 'mysql://login:password@localhost/lexale39_wh'
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        'DATABASE_URL', 'sqlite:///' + os.path.join(base_dir, 'database.db'))
+    #SQLALCHEMY_DATABASE_URI = 'mysql://login:password@localhost/lexale39_wh'
     WTF_CSRF_ENABLED = True
 
 

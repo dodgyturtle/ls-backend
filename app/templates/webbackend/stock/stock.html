@@ -26,6 +26,10 @@
           <p class="p-3 mb-2">{{form.quantity(class='form-control')}}</p>
         </div>
         <div class="form-group mx-sm-3 mb-2">
+          <p class="p-3 mb-2">{{form.status.label}}</p>
+          <p class="p-3 mb-2">{{form.status(class='form-control')}}</p>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
           <p class="p-3 mb-2">{{form.comment.label}}</p>
           <p class="p-3 mb-2">{{form.comment(class='form-control')}}</p>
         </div>
@@ -46,6 +50,7 @@
               <th scope="col">Название акции</th>
               <th scope="col">Наименование товара</th>
               <th scope="col">Количество</th>
+              <th scope="col">Статус</th>
               <th scope="col">Комментарий</th>
               <th scope="col">Редактировать</th>
               <th scope="col">Удалить</th>
@@ -61,6 +66,11 @@
               <td>{{ stock.namestock }}</td>
               <td>{{ stock.nameproduct }}</td>
               <td>{{ stock.quantity }}</td>
+              {% if stock.status %}
+              <td span class="badge badge-success">Выдано</td>
+              {% else %}
+              <td span class="badge badge-info">Не выдано</td>
+              {% endif %}
               <td>{{ stock.comment }}</td>
               <td><a href="{{url_for('webbackend.stockupdate', stock_id=stock.id) }}"><span
                     class="badge badge-warning">Редактировать</span></a></td>

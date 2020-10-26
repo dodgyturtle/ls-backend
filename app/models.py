@@ -30,6 +30,7 @@ class Stock(db.Model, ModelMixin, SerializerMixin):
     nameproduct = db.Column(db.String(100))
     quantity = db.Column(db.Integer)
     sumquantity = db.Column(db.Integer)
+    status = db.Column(db.Boolean, default=False)
     comment = db.Column(db.Text)
 
     def __repr__(self):
@@ -56,7 +57,7 @@ class Sale(db.Model, ModelMixin, SerializerMixin):
     price = db.Column(db.Numeric(11,2))
     sumprice = db.Column(db.Numeric(11,2))
     sumquantity = db.Column(db.Integer)
-    status = db.Column(db.Boolean, default=True)
+    status = db.Column(db.Boolean, default=False)
     comment = db.Column(db.Text)
 
     def __repr__(self):

@@ -26,13 +26,15 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{ form.client_id(class='form-control' ,value=sale.client_id) }}</td>
-              <td>{{ form.product_id(class='form-control' ,value=sale.product_id) }}</td>
-              <td>{{ form.quantity(class='form-control' ,value=sale.quantity) }}</td>
-              <td>{{ form.price(class='form-control' ,value=sale.price) }}</td>
-              <td>{{ form.sumprice(class='form-control' ,value=sale.sumprice) }}</td>
-              <td>{{ form.status(class='form-control' ,checked=sale.status) }}</td>
-              <td>{{ form.comment(class='form-control' ,value=sale.comment) }}</td>
+              {% set default_client_id = form.client_id.process_data(sale.client_id) %}
+              {% set default_product_id = form.product_id.process_data(sale.product_id) %}
+              <td>{{ form.client_id(class='form-control') }}</td>
+              <td>{{ form.product_id(class='form-control') }}</td>
+              <td>{{ form.quantity(class='form-control', value=sale.quantity) }}</td>
+              <td>{{ form.price(class='form-control', value=sale.price) }}</td>
+              <td>{{ form.sumprice(class='form-control', value=sale.sumprice) }}</td>
+              <td>{{ form.status(class='form-control', checked=sale.status) }}</td>
+              <td>{{ form.comment(class='form-control', value=sale.comment) }}</td>
               <td>{{ form.submit(class='btn btn-danger') }}</td>
               <td>{{ form.cancel(class='btn btn-dark') }}</td>
             </tr>

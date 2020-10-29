@@ -34,8 +34,17 @@
         </div>
       </div>
     </div>
+  </form>
     <div class="card-header">
       <h3 class="card-title">Перечень</h3>
+      <form class="form-group" role="form" action="{{ url_for('webbackend.coming') }}" method="post">
+        {{ form.csrf_token }}
+        <div class="btn-group btn-group-toggle ">
+          {{form_table.day(class='btn btn-secondary btn-sm')}}
+          {{form_table.week(class='btn btn-secondary btn-sm')}}
+          {{form_table.month(class='btn btn-secondary btn-sm')}}
+        </div>
+      </form>
     </div>
     <div class="card-body">
       <div class="form-group">
@@ -78,8 +87,12 @@
               <td></td>
               <td></td>
               <td></td>
-              <td><p class="text-right font-weight-bold ">Общая сумма:</p></td>
-              <td><p class="text-left font-weight-bold ">{{ comings | sum(attribute='sumprice') }}</p></td>
+              <td>
+                <p class="text-right font-weight-bold ">Общая сумма:</p>
+              </td>
+              <td>
+                <p class="text-left font-weight-bold ">{{ comings | sum(attribute='sumprice') }}</p>
+              </td>
               <td></td>
               <td></td>
               <td></td>
@@ -88,7 +101,6 @@
         </table>
       </div>
     </div>
-  </form>
 </div>
 <script>
   function isEmpty(str) {

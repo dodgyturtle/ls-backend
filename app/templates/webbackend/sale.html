@@ -43,71 +43,84 @@
         </div>
       </div>
     </div>
-    <div class="card-header">
-      <h3 class="card-title">Перечень проданных товаров</h3>
-    </div>
-    <div class="card-body">
-      <div class="form-group">
-        <table class="table ">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Дата и Время</th>
-              <th scope="col">Клиент</th>
-              <th scope="col">Товар</th>
-              <th scope="col">Количество</th>
-              <th scope="col">Стоимость</th>
-              <th scope="col">Итоговая стоимость</th>
-              <th scope="col">Статус</th>
-              <th scope="col">Комментарий</th>
-              <th scope="col">Редактировать</th>
-              <th scope="col">Удалить</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% if sales %}
-            {% for sale in sales %}
-            <tr>
-              <th scope="row">{{loop.index}}</th>
-              <td>{{ sale.date.strftime('%d-%m-%Y %H:%M') }}</td>
-              <td>{{ sale.client.fullname }}</td>
-              <td>{{ sale.product.nameproduct }}</td>
-              <td>{{ sale.quantity }}</td>
-              <td>{{ sale.price }}</td>
-              <td>{{ sale.sumprice }}</td>
-              {% if sale.status %}
-              <td span class="badge badge-success">Выдано</td>
-              {% else %}
-              <td span class="badge badge-info">Не выдано</td>
-              {% endif %}
-              <td>{{ sale.comment }}</td>
-              <td><a href="{{url_for('webbackend.saleupdate', sale_id=sale.id) }}"><span
-                    class="badge badge-warning">Редактировать</span></a></td>
-              <td><a href="{{ url_for('webbackend.saledelete', sale_id=sale.id) }}"><span
-                    class="badge badge-danger">Удалить</span></a></td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-          </tbody>
-          <tbody>
-            <tr>
-              <th></th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td><p class="text-right font-weight-bold ">Общая сумма:</p></td>
-              <td><p class="text-left font-weight-bold ">{{ sales | sum(attribute='sumprice') }}</p></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
   </form>
+  <div class="card-header">
+    <h3 class="card-title">Перечень проданных товаров</h3>
+    <form class="form-group" role="form" action="{{ url_for('webbackend.sale') }}" method="post">
+      {{ form.csrf_token }}
+      <div class="btn-group btn-group-toggle ">
+        {{form_table.day(class='btn btn-secondary btn-sm')}}
+        {{form_table.week(class='btn btn-secondary btn-sm')}}
+        {{form_table.month(class='btn btn-secondary btn-sm')}}
+      </div>
+    </form>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <table class="table ">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Дата и Время</th>
+            <th scope="col">Клиент</th>
+            <th scope="col">Товар</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Стоимость</th>
+            <th scope="col">Итоговая стоимость</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Комментарий</th>
+            <th scope="col">Редактировать</th>
+            <th scope="col">Удалить</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if sales %}
+          {% for sale in sales %}
+          <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{ sale.date.strftime('%d-%m-%Y %H:%M') }}</td>
+            <td>{{ sale.client.fullname }}</td>
+            <td>{{ sale.product.nameproduct }}</td>
+            <td>{{ sale.quantity }}</td>
+            <td>{{ sale.price }}</td>
+            <td>{{ sale.sumprice }}</td>
+            {% if sale.status %}
+            <td span class="badge badge-success">Выдано</td>
+            {% else %}
+            <td span class="badge badge-info">Не выдано</td>
+            {% endif %}
+            <td>{{ sale.comment }}</td>
+            <td><a href="{{url_for('webbackend.saleupdate', sale_id=sale.id) }}"><span
+                  class="badge badge-warning">Редактировать</span></a></td>
+            <td><a href="{{ url_for('webbackend.saledelete', sale_id=sale.id) }}"><span
+                  class="badge badge-danger">Удалить</span></a></td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+        <tbody>
+          <tr>
+            <th></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <p class="text-right font-weight-bold ">Общая сумма:</p>
+            </td>
+            <td>
+              <p class="text-left font-weight-bold ">{{ sales | sum(attribute='sumprice') }}</p>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 <script>
   function isEmpty(str) {

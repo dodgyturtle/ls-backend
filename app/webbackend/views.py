@@ -1,15 +1,19 @@
+from decimal import Decimal
+
 import simplejson
 from app import db
 from app.models import Balance, Client, Coming, Product, Sale, Stock
-from decimal import Decimal
 from app.webbackend.forms import (AddClientForm, AddComingForm, AddProductForm,
                                   AddSaleForm, AddStockForm, DeleteForm,
-                                  UpdateBalanceForm, UpdateClientForm,
-                                  UpdateComingForm, UpdateProductForm,
-                                  UpdateSaleForm, UpdateStockForm)
-from app.webbackend.handlers import errors_convert_dict_to_string
+                                  FilterTable, UpdateBalanceForm,
+                                  UpdateClientForm, UpdateComingForm,
+                                  UpdateProductForm, UpdateSaleForm,
+                                  UpdateStockForm)
+from app.webbackend.handlers import (errors_convert_dict_to_string,
+                                     filter_for_table)
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
+from sqlalchemy import desc
 
 web_blueprint = Blueprint('webbackend', __name__)
 
@@ -136,6 +140,7 @@ def clientdelete(client_id: int):
 @login_required
 def sale():
     form = AddSaleForm(request.form)
+    form_table = FilterTable(request.form)
     form.client_id.choices = [(client.id, client.fullname)
                               for client in Client.query.all()]
     form.product_id.choices = [(product.id, product.nameproduct)
@@ -143,6 +148,7 @@ def sale():
     all_balance_price = {
         balance.product_id: balance.price for balance in Balance.query.all()}
     all_price_json = simplejson.dumps(all_balance_price)
+    sales = Sale.query.order_by(Sale.date.desc()).all()
     if form.validate_on_submit():
         sale_db = Sale(
             client_id=form.client_id.data,
@@ -171,12 +177,18 @@ def sale():
         else:
             flash(f'Произошла ошибка обработки. База данных не доступна.', 'danger')
             return redirect(url_for('webbackend.sale'))
-    elif form.is_submitted():
+    elif form.is_submitted() and form.submit.data:
         flash(
             f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
         return redirect(url_for('webbackend.sale'))
-    sales = Sale.query.all()
-    return render_template('webbackend/sale.html', form=form, sales=sales, all_price=all_price_json)
+    if form_table.is_submitted():
+        if form_table.day.data:
+            sales=filter_for_table(Sale, "day")
+        elif form_table.week.data:
+            sales=filter_for_table(Sale, "week")
+        elif form_table.month.data:
+            sales=filter_for_table(Sale, "month")
+    return render_template('webbackend/sale.html', form=form, form_table=form_table, sales=sales, all_price=all_price_json)
 
 
 @web_blueprint.route('/saleupdate/<int:sale_id>', methods=['GET', 'POST'])
@@ -232,8 +244,10 @@ def saledelete(sale_id: int):
 @login_required
 def coming():
     form = AddComingForm(request.form)
+    form_table=FilterTable(request.form)
     form.product_id.choices = [(product.id, product.nameproduct)
                                for product in Product.query.all()]
+    comings = Coming.query.order_by(Coming.date.desc()).all()
     if form.validate_on_submit():
         coming_db = Coming(
             product_id=form.product_id.data,
@@ -270,12 +284,18 @@ def coming():
             )
             balance_db.save()
         return redirect(url_for('webbackend.coming'))
-    elif form.is_submitted():
+    elif form.is_submitted() and form.submit.data:
         flash(
             f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
         return redirect(url_for('webbackend.coming'))
-    comings = Coming.query.all()
-    return render_template('webbackend/coming.html', form=form, comings=comings)
+    if form_table.is_submitted():
+        if form_table.day.data:
+            comings=filter_for_table(Coming, "day")
+        elif form_table.week.data:
+            comings=filter_for_table(Coming, "week")
+        elif form_table.month.data:
+            comings=filter_for_table(Coming, "month")
+    return render_template('webbackend/coming.html', form=form, form_table=form_table, comings=comings)
 
 
 @web_blueprint.route('/comingupdate/<int:coming_id>', methods=['GET', 'POST'])
@@ -382,6 +402,8 @@ def balancedelete(balance_id: int):
 @login_required
 def stock():
     form = AddStockForm(request.form)
+    form_table = FilterTable(request.form)
+    stocks = Stock.query.order_by(Stock.date.desc()).all()
     form.client_id.choices = [(client.id, client.fullname)
                               for client in Client.query.all()]
     if form.validate_on_submit():
@@ -395,12 +417,18 @@ def stock():
         )
         stock_db.save()
         return redirect(url_for('webbackend.stock'))
-    elif form.is_submitted():
+    elif form.is_submitted() and form.submit.data:
         flash(
             f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
         return redirect(url_for('webbackend.stock'))
-    stocks = Stock.query.all()
-    return render_template('webbackend/stock/stock.html', form=form, stocks=stocks)
+    if form_table.is_submitted():
+        if form_table.day.data:
+            stocks=filter_for_table(Stock, "day")
+        elif form_table.week.data:
+            stocks=filter_for_table(Stock, "week")
+        elif form_table.month.data:
+            stocks=filter_for_table(Stock, "month")
+    return render_template('webbackend/stock/stock.html', form=form, form_table=form_table, stocks=stocks)
 
 
 @web_blueprint.route('/stockupdate/<int:stock_id>', methods=['GET', 'POST'])

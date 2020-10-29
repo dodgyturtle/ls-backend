@@ -30,6 +30,11 @@ class DeleteForm(FlaskForm):
     submit = SubmitField('Удалить')
     cancel = SubmitField('Отменить')
 
+class FilterTable(FlaskForm):
+    day = SubmitField('День')
+    week = SubmitField('Неделя')
+    month = SubmitField('Месяц')
+
 
 class AddClientForm(FlaskForm):
     fullname = StringField('ФИО')

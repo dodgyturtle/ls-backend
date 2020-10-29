@@ -36,53 +36,61 @@
         <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
       </div>
     </div>
-    <div class="card-header">
-      <h3 class="card-title">Перечень акции</h3>
-    </div>
-    <div class="card-body">
-      <div class="form-group">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Дата и Время</th>
-              <th scope="col">Клиент</th>
-              <th scope="col">Название акции</th>
-              <th scope="col">Наименование товара</th>
-              <th scope="col">Количество</th>
-              <th scope="col">Статус</th>
-              <th scope="col">Комментарий</th>
-              <th scope="col">Редактировать</th>
-              <th scope="col">Удалить</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% if stocks %}
-            {% for stock in stocks %}
-            <tr>
-              <th scope="row">{{loop.index}}</th>
-              <td>{{ stock.date.strftime('%d-%m-%Y %H:%M') }}</td>
-              <td>{{ stock.client.fullname }}</td>
-              <td>{{ stock.namestock }}</td>
-              <td>{{ stock.nameproduct }}</td>
-              <td>{{ stock.quantity }}</td>
-              {% if stock.status %}
-              <td span class="badge badge-success">Выдано</td>
-              {% else %}
-              <td span class="badge badge-info">Не выдано</td>
-              {% endif %}
-              <td>{{ stock.comment }}</td>
-              <td><a href="{{url_for('webbackend.stockupdate', stock_id=stock.id) }}"><span
-                    class="badge badge-warning">Редактировать</span></a></td>
-              <td> <a href="{{url_for('webbackend.stockdelete', stock_id=stock.id) }}"><span
-                    class="badge badge-danger">Удалить</span></a></td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-          </tbody>
-        </table>
-      </div>
-    </div>
   </form>
+  <div class="card-header">
+    <h3 class="card-title">Перечень акции</h3>
+    <form class="form-group" role="form" action="{{ url_for('webbackend.stock') }}" method="post">
+      {{ form.csrf_token }}
+      <div class="btn-group btn-group-toggle ">
+        {{form_table.day(class='btn btn-secondary btn-sm')}}
+        {{form_table.week(class='btn btn-secondary btn-sm')}}
+        {{form_table.month(class='btn btn-secondary btn-sm')}}
+      </div>
+    </form>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Дата и Время</th>
+            <th scope="col">Клиент</th>
+            <th scope="col">Название акции</th>
+            <th scope="col">Наименование товара</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Комментарий</th>
+            <th scope="col">Редактировать</th>
+            <th scope="col">Удалить</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if stocks %}
+          {% for stock in stocks %}
+          <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{ stock.date.strftime('%d-%m-%Y %H:%M') }}</td>
+            <td>{{ stock.client.fullname }}</td>
+            <td>{{ stock.namestock }}</td>
+            <td>{{ stock.nameproduct }}</td>
+            <td>{{ stock.quantity }}</td>
+            {% if stock.status %}
+            <td span class="badge badge-success">Выдано</td>
+            {% else %}
+            <td span class="badge badge-info">Не выдано</td>
+            {% endif %}
+            <td>{{ stock.comment }}</td>
+            <td><a href="{{url_for('webbackend.stockupdate', stock_id=stock.id) }}"><span
+                  class="badge badge-warning">Редактировать</span></a></td>
+            <td> <a href="{{url_for('webbackend.stockdelete', stock_id=stock.id) }}"><span
+                  class="badge badge-danger">Удалить</span></a></td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 {% endblock %}

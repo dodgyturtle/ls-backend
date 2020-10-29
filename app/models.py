@@ -1,5 +1,6 @@
 import datetime
 
+from sqlalchemy.sql import func
 from sqlalchemy_serializer import SerializerMixin
 
 from app import db
@@ -23,7 +24,7 @@ class Client(db.Model, ModelMixin, SerializerMixin):
         return self.fullname
 
 class Stock(db.Model, ModelMixin, SerializerMixin):
-    date = db.Column(db.DateTime, default=datetime.datetime.now())
+    date = db.Column(db.DateTime, server_default=func.now())
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('client.id', ondelete= 'CASCADE'), index=True)
     namestock = db.Column(db.String(100))
@@ -50,7 +51,7 @@ class Product(db.Model, ModelMixin, SerializerMixin):
 class Sale(db.Model, ModelMixin, SerializerMixin):
     serialize_rules = ('-product.sales', '-product.comings', '-product.balances', '-client.sales')
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, default=datetime.datetime.now())
+    date = db.Column(db.DateTime, server_default=func.now())
     product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete= 'CASCADE'), index=True)
     client_id = db.Column(db.Integer, db.ForeignKey('client.id', ondelete= 'CASCADE'), index=True)
     quantity = db.Column(db.Integer)
@@ -66,7 +67,7 @@ class Sale(db.Model, ModelMixin, SerializerMixin):
 class Coming(db.Model, ModelMixin, SerializerMixin):
     serialize_rules = ('-product.id', '-product.sales', '-product.comings', '-product.balances',)
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, default=datetime.datetime.now())
+    date = db.Column(db.DateTime, server_default=func.now())
     product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete= 'CASCADE'), index=True)
     quantity = db.Column(db.Integer)
     price = db.Column(db.Numeric(11,2))
@@ -82,7 +83,7 @@ class Coming(db.Model, ModelMixin, SerializerMixin):
 class Balance(db.Model, ModelMixin, SerializerMixin):
     serialize_rules = ('-product.id', '-product.sales', '-product.comings', '-product.balances',)
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, default=datetime.datetime.now())
+    date = db.Column(db.DateTime, server_default=func.now())
     product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete= 'CASCADE'), index=True)
     quantity = db.Column(db.Integer)
     current_quantity = db.Column(db.Integer)

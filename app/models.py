@@ -11,6 +11,7 @@ from app.utils import ModelMixin
 class Client(db.Model, ModelMixin, SerializerMixin):
     serialize_rules = ('-sales', '-comings', '-balances' )
     id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, server_default=func.now())
     fullname = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.BigInteger, unique=True)
     productname = db.Column(db.String(100))

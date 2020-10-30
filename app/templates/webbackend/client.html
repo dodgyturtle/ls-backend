@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="card-header">
-      <h3 class="card-title">Перечень клиентов</h3>
+      <h3 class="card-title">Клиенты</h3>
     </div>
     <div class="card-body">
       <div class="form-group">
@@ -38,6 +38,7 @@
           <thead>
             <tr>
               <th scope="col">#</th>
+              <th scope="col">Дата и Время</th>
               <th scope="col">ФИО</th>
               <th scope="col">Номер телефона</th>
               <th scope="col">Статус</th>
@@ -52,6 +53,7 @@
             {% for client in clients %}
             <tr>
               <th scope="row">{{loop.index}}</th>
+              <td>{{ client.date.strftime('%d-%m-%Y %H:%M') }}</td>
               <td>{{ client.fullname }}</td>
               <td>{{ client.phone }}</td>
               {% if client.status %}

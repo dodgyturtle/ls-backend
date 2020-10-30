@@ -1,6 +1,6 @@
 from app.models import Balance, Client, Coming, Product, Sale, Stock
 from flask_wtf import FlaskForm
-from wtforms import (BooleanField, DateTimeField, DecimalField, IntegerField,
+from wtforms import (BooleanField, DateField, DecimalField, IntegerField,
                      SelectField, StringField, SubmitField, ValidationError)
 from wtforms.validators import (DataRequired, EqualTo, Length, NumberRange,
                                 Optional)
@@ -30,10 +30,11 @@ class DeleteForm(FlaskForm):
     submit = SubmitField('Удалить')
     cancel = SubmitField('Отменить')
 
+
 class FilterTable(FlaskForm):
-    day = SubmitField('День')
-    week = SubmitField('Неделя')
-    month = SubmitField('Месяц')
+    startdate = DateField(validators=[DataRequired()], format='%d.%m.%Y')
+    finishdate = DateField(validators=[DataRequired()], format='%d.%m.%Y')
+    showdata = SubmitField('Показать')
 
 
 class AddClientForm(FlaskForm):

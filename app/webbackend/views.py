@@ -10,7 +10,7 @@ from app.webbackend.forms import (AddClientForm, AddComingForm, AddProductForm,
                                   UpdateProductForm, UpdateSaleForm,
                                   UpdateStockForm)
 from app.webbackend.handlers import (errors_convert_dict_to_string,
-                                     filter_for_table)
+                                     filter_for_table_between_date)
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 from sqlalchemy import desc
@@ -90,7 +90,7 @@ def client():
         flash(
             f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
         return redirect(url_for('webbackend.client'))
-    clients = Client.query.all()
+    clients = Client.query.order_by(Client.date.desc()).all()
     return render_template('webbackend/client.html', form=form, clients=clients)
 
 
@@ -182,12 +182,14 @@ def sale():
             f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
         return redirect(url_for('webbackend.sale'))
     if form_table.is_submitted():
-        if form_table.day.data:
-            sales=filter_for_table(Sale, "day")
-        elif form_table.week.data:
-            sales=filter_for_table(Sale, "week")
-        elif form_table.month.data:
-            sales=filter_for_table(Sale, "month")
+        if form_table.showdata.data:
+            startdate = form_table.startdate.data
+            finishdate = form_table.finishdate.data
+            if startdate and finishdate:
+                sales = filter_for_table_between_date(Sale, startdate, finishdate)
+            else:
+                flash(
+                f'Ошибка ввода данных: Неверный формат даты!', 'danger')
     return render_template('webbackend/sale.html', form=form, form_table=form_table, sales=sales, all_price=all_price_json)
 
 
@@ -289,12 +291,14 @@ def coming():
             f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
         return redirect(url_for('webbackend.coming'))
     if form_table.is_submitted():
-        if form_table.day.data:
-            comings=filter_for_table(Coming, "day")
-        elif form_table.week.data:
-            comings=filter_for_table(Coming, "week")
-        elif form_table.month.data:
-            comings=filter_for_table(Coming, "month")
+        if form_table.showdata.data:
+            startdate = form_table.startdate.data
+            finishdate = form_table.finishdate.data
+            if startdate and finishdate:
+                comings = filter_for_table_between_date(Coming, startdate, finishdate)
+            else:
+                flash(
+                f'Ошибка ввода данных: Неверный формат даты!', 'danger')
     return render_template('webbackend/coming.html', form=form, form_table=form_table, comings=comings)
 
 
@@ -422,12 +426,14 @@ def stock():
             f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
         return redirect(url_for('webbackend.stock'))
     if form_table.is_submitted():
-        if form_table.day.data:
-            stocks=filter_for_table(Stock, "day")
-        elif form_table.week.data:
-            stocks=filter_for_table(Stock, "week")
-        elif form_table.month.data:
-            stocks=filter_for_table(Stock, "month")
+        if form_table.showdata.data:
+            startdate = form_table.startdate.data
+            finishdate = form_table.finishdate.data
+            if startdate and finishdate:
+                stocks = filter_for_table_between_date(Stock, startdate, finishdate)
+            else:
+                flash(
+                f'Ошибка ввода данных: Неверный формат даты!', 'danger')
     return render_template('webbackend/stock/stock.html', form=form, form_table=form_table, stocks=stocks)
 
 
@@ -479,5 +485,5 @@ def stockdelete(stock_id: int):
 @web_blueprint.route('/order/<int:client_id>', methods=['GET', 'POST'])
 @login_required
 def order(client_id: int):
-    orders_db = Sale.query.filter(Sale.client_id == client_id).all()
+    orders_db = Sale.query.filter(Sale.client_id == client_id).order_by(Sale.date.desc()).all()
     return render_template('webbackend/order/order.html', orders=orders_db)

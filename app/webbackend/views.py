@@ -22,7 +22,7 @@ web_blueprint = Blueprint('webbackend', __name__)
 @login_required
 def product():
     form = AddProductForm(request.form)
-    if form.validate_on_submit():
+    if form.submit.data and form.validate_on_submit():
         product_db = Product(nameproduct=form.nameproduct.data)
         product_db.save()
         return redirect(url_for('webbackend.product'))
@@ -77,7 +77,9 @@ def productdelete(product_id: int):
 @login_required
 def client():
     form = AddClientForm(request.form)
-    if form.validate_on_submit():
+    form_table = FilterTable(request.form)
+    clients = Client.query.order_by(Client.date.desc()).all()
+    if form.submit.data and form.validate_on_submit():
         client_db = Client(
             fullname=form.fullname.data,
             phone=form.phone.data,
@@ -86,12 +88,20 @@ def client():
         )
         client_db.save()
         return redirect(url_for('webbackend.client'))
-    elif form.is_submitted():
+    elif form.is_submitted() and form.submit.data:
         flash(
             f'Ошибка ввода данных: { errors_convert_dict_to_string(form.errors) }', 'danger')
         return redirect(url_for('webbackend.client'))
-    clients = Client.query.order_by(Client.date.desc()).all()
-    return render_template('webbackend/client.html', form=form, clients=clients)
+    if form_table.is_submitted():
+        if form_table.showdata.data:
+            startdate = form_table.startdate.data
+            finishdate = form_table.finishdate.data
+            if startdate and finishdate:
+                clients = filter_for_table_between_date(Client, startdate, finishdate)
+            else:
+                flash(
+                f'Ошибка ввода данных: Неверный формат даты!', 'danger')
+    return render_template('webbackend/client.html', form=form, form_table=form_table, clients=clients)
 
 
 @web_blueprint.route('/clientupdate/<int:client_id>', methods=['GET', 'POST'])
@@ -149,7 +159,7 @@ def sale():
         balance.product_id: balance.price for balance in Balance.query.all()}
     all_price_json = simplejson.dumps(all_balance_price)
     sales = Sale.query.order_by(Sale.date.desc()).all()
-    if form.validate_on_submit():
+    if form.submit.data and form.validate_on_submit():
         sale_db = Sale(
             client_id=form.client_id.data,
             product_id=form.product_id.data,
@@ -250,7 +260,7 @@ def coming():
     form.product_id.choices = [(product.id, product.nameproduct)
                                for product in Product.query.all()]
     comings = Coming.query.order_by(Coming.date.desc()).all()
-    if form.validate_on_submit():
+    if form.submit.data and form.validate_on_submit():
         coming_db = Coming(
             product_id=form.product_id.data,
             quantity=form.quantity.data,
@@ -410,7 +420,7 @@ def stock():
     stocks = Stock.query.order_by(Stock.date.desc()).all()
     form.client_id.choices = [(client.id, client.fullname)
                               for client in Client.query.all()]
-    if form.validate_on_submit():
+    if form.submit.data and form.validate_on_submit():
         stock_db = Stock(
             client_id=form.client_id.data,
             namestock=form.namestock.data,
@@ -485,5 +495,15 @@ def stockdelete(stock_id: int):
 @web_blueprint.route('/order/<int:client_id>', methods=['GET', 'POST'])
 @login_required
 def order(client_id: int):
+    form_table = FilterTable(request.form)
     orders_db = Sale.query.filter(Sale.client_id == client_id).order_by(Sale.date.desc()).all()
-    return render_template('webbackend/order/order.html', orders=orders_db)
+    if form_table.is_submitted():
+        if form_table.showdata.data:
+            startdate = form_table.startdate.data
+            finishdate = form_table.finishdate.data
+            if startdate and finishdate:
+                orders_db = filter_for_table_between_date(Sale, startdate, finishdate, client_id)
+            else:
+                flash(
+                f'Ошибка ввода данных: Неверный формат даты!', 'danger')
+    return render_template('webbackend/order/order.html', form_table=form_table, orders=orders_db, client_id=client_id)

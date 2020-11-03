@@ -130,6 +130,3 @@ dmypy.json
 *.db
 .vscode/
 .vscode
-
-wsgi.py
-config.py

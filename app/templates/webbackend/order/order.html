@@ -3,7 +3,20 @@
 {% block content %}
 <div class="container-fluid">
     <div class="card-header">
-      <h3 class="card-title">Заказ</h3>
+      <h3 class="card-title">Заказы</h3>
+      <form class="form-inline" role="form" action="{{ url_for('webbackend.order', client_id=client_id) }}" method="post">
+        {{ form_table.csrf_token }}
+      <div class="form-group m-3">
+        {{ form_table.startdate(class='form-control') }}
+      </div>
+      <div class="form-group mt-2">
+       <p> - </p>
+      </div>
+      <div class="form-group m-3">
+        {{ form_table.finishdate(class='form-control') }}
+      </div>
+        {{form_table.showdata(class='btn btn-secondary btn-sm')}}
+    </form>
     </div>
       <div class="card-body">
       <div class="form-group"> 
@@ -46,6 +59,25 @@
       </div>
       </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.ru-ru.js" type="text/javascript"></script>
+<script>
+  $('#startdate').datepicker({
+    uiLibrary: 'bootstrap4',
+    format: 'dd.mm.yyyy',
+    autoclose: true,
+    locale: 'ru-ru',
+  });
+
+  $('#finishdate').datepicker({
+    uiLibrary: 'bootstrap4',
+    format: 'dd.mm.yyyy',
+    autoclose: true,
+    locale: 'ru-ru',
+  });     
+</script>
 {% endblock %}
 
 

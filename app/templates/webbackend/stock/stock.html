@@ -36,53 +36,85 @@
         <p class="p-3 mb-2">{{form.submit(class='btn btn-primary mb-2')}}</p>
       </div>
     </div>
-    <div class="card-header">
-      <h3 class="card-title">Перечень акции</h3>
-    </div>
-    <div class="card-body">
-      <div class="form-group">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Дата и Время</th>
-              <th scope="col">Клиент</th>
-              <th scope="col">Название акции</th>
-              <th scope="col">Наименование товара</th>
-              <th scope="col">Количество</th>
-              <th scope="col">Статус</th>
-              <th scope="col">Комментарий</th>
-              <th scope="col">Редактировать</th>
-              <th scope="col">Удалить</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% if stocks %}
-            {% for stock in stocks %}
-            <tr>
-              <th scope="row">{{loop.index}}</th>
-              <td>{{ stock.date.strftime('%d-%m-%Y %H:%M') }}</td>
-              <td>{{ stock.client.fullname }}</td>
-              <td>{{ stock.namestock }}</td>
-              <td>{{ stock.nameproduct }}</td>
-              <td>{{ stock.quantity }}</td>
-              {% if stock.status %}
-              <td span class="badge badge-success">Выдано</td>
-              {% else %}
-              <td span class="badge badge-info">Не выдано</td>
-              {% endif %}
-              <td>{{ stock.comment }}</td>
-              <td><a href="{{url_for('webbackend.stockupdate', stock_id=stock.id) }}"><span
-                    class="badge badge-warning">Редактировать</span></a></td>
-              <td> <a href="{{url_for('webbackend.stockdelete', stock_id=stock.id) }}"><span
-                    class="badge badge-danger">Удалить</span></a></td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-          </tbody>
-        </table>
-      </div>
-    </div>
   </form>
+  <div class="card-header">
+    <h3 class="card-title">Акции</h3>
+    <form class="form-inline" role="form" action="{{ url_for('webbackend.stock') }}" method="post">
+      {{ form_table.csrf_token }}
+    <div class="form-group m-3">
+      {{ form_table.startdate(class='form-control') }}
+    </div>
+    <div class="form-group mt-2">
+     <p> - </p>
+    </div>
+    <div class="form-group m-3">
+      {{ form_table.finishdate(class='form-control') }}
+    </div>
+      {{form_table.showdata(class='btn btn-secondary btn-sm')}}
+  </form>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Дата и Время</th>
+            <th scope="col">Клиент</th>
+            <th scope="col">Название акции</th>
+            <th scope="col">Наименование товара</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Комментарий</th>
+            <th scope="col">Редактировать</th>
+            <th scope="col">Удалить</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if stocks %}
+          {% for stock in stocks %}
+          <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{ stock.date.strftime('%d-%m-%Y %H:%M') }}</td>
+            <td>{{ stock.client.fullname }}</td>
+            <td>{{ stock.namestock }}</td>
+            <td>{{ stock.nameproduct }}</td>
+            <td>{{ stock.quantity }}</td>
+            {% if stock.status %}
+            <td span class="badge badge-success">Выдано</td>
+            {% else %}
+            <td span class="badge badge-info">Не выдано</td>
+            {% endif %}
+            <td>{{ stock.comment }}</td>
+            <td><a href="{{url_for('webbackend.stockupdate', stock_id=stock.id) }}"><span
+                  class="badge badge-warning">Редактировать</span></a></td>
+            <td> <a href="{{url_for('webbackend.stockdelete', stock_id=stock.id) }}"><span
+                  class="badge badge-danger">Удалить</span></a></td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.ru-ru.js" type="text/javascript"></script>
+<script>
+    $('#startdate').datepicker({
+    uiLibrary: 'bootstrap4',
+    format: 'dd.mm.yyyy',
+    autoclose: true,
+    locale: 'ru-ru',
+  });
+
+  $('#finishdate').datepicker({
+    uiLibrary: 'bootstrap4',
+    format: 'dd.mm.yyyy',
+    autoclose: true,
+    locale: 'ru-ru',
+  });   
+</script>
 {% endblock %}

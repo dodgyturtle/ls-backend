@@ -7,7 +7,7 @@ Get one:
 curl -i -X GET http://127.0.0.1:5000/api/v1/clientgetone/<id:int>
 
 Add:
-curl -i -X POST "http://127.0.0.1:5000/api/v1/clienthandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"comment\": \"Its only text\", \"fullname\": \"Test User\", \"phone\": 89100000003, \"productname\": \"Iphone X\", \"status\": true}"
+curl -i -X POST "http://127.0.0.1:5000/api/v1/clienthandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{\"fullname\": \"Клиент2\", \"phone\": 89100000001, \"status\": true, \"comment\": \"Its only text\"}" 
 
 Delete:
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/clienthandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"id\": <id:int> }"
@@ -26,7 +26,7 @@ Get one:
 curl -i -X GET http://127.0.0.1:5000/api/v1/stockgetone/<id:int>
 
 Add:
-curl -i -X POST "http://127.0.0.1:5000/api/v1/stockhandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"namestock\": \"PhoneSales\", \"nameproduct\": \"Phone\", \"quantity\": 10, \"comment\": \"Comment Text\", \"sumquantity\": 50}"
+curl -i -X POST "http://127.0.0.1:5000/api/v1/stockhandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"client_id\":1, \"namestock\": \"PhoneSales\", \"nameproduct\": \"Phone\", \"quantity\": 10, \"comment\": \"Comment Text\", \"sumquantity\": 50, \"status\": true}"
 
 Delete:
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/stockhandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"id\": <id:int> }"
@@ -44,7 +44,7 @@ Get one:
 curl -i -X GET http://127.0.0.1:5000/api/v1/productgetone/<id:int>
 
 Add:
-curl -i -X POST "http://127.0.0.1:5000/api/v1/producthandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"nameproduct\": \"Iphone X\", \"numberproduct\": \"9135\"}"
+curl -i -X POST "http://127.0.0.1:5000/api/v1/producthandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"nameproduct\": \"Iphone X\"}"
 
 Delete:
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/producthandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"id\": <id:int> }"
@@ -62,13 +62,13 @@ Get one:
 curl -i -X GET http://127.0.0.1:5000/api/v1/cominggetone/<id:int>
 
 Add:
-curl -i -X POST "http://127.0.0.1:5000/api/v1/cominghandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"product_id\": \"1\", \"price\": 99.99, \"quantuty\": 10, \"comment\": \"Text\", \"sumprice\": 999.9, \"sumquantity\": 10}"
+curl -i -X POST "http://127.0.0.1:5000/api/v1/cominghandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"product_id\": \"1\", \"price\": 99.99, \"quantity\": 10, \"comment\": \"Text\", \"sumprice\": 999.9}"
 
 Delete:
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/cominghandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"id\": <id:int> }"
 
 Update:
-curl -i -X PUT "http://127.0.0.1:5000/api/v1/cominghandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"id\": 1, \"price\": 100.99, \"quantuty\": 10}"
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/cominghandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"id\": 1, \"price\": 100.99, \"quantity\": 10}"
 
 
 Sale:
@@ -80,13 +80,13 @@ Get one:
 curl -i -X GET http://127.0.0.1:5000/api/v1/salegetone/<id:int>
 
 Add:
-curl -i -X POST "http://127.0.0.1:5000/api/v1/salehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"product_id\": \"1\", \"price\": 99.99, \"quantuty\": 10, \"comment\": \"Text\", \"sumprice\": 999.9, \"sumquantity\": 10}"
+curl -i -X POST "http://127.0.0.1:5000/api/v1/salehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"product_id\": \"1\", \"price\": 99.99, \"quantity\": 10, \"comment\": \"Text\", \"sumprice\": 999.9, \"sumquantity\": 10}"
 
 Delete:
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/salehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"id\": <id:int> }"
 
 Update:
-curl -i -X PUT "http://127.0.0.1:5000/api/v1/salehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"id\": 1, \"price\": 100.99, \"quantuty\": 10}"
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/salehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"id\": 1, \"price\": 100.99, \"quantity\": 10}"
 
 
 Balance:
@@ -97,11 +97,8 @@ curl -i -X GET http://127.0.0.1:5000/api/v1/balancegetall
 Get one:
 curl -i -X GET http://127.0.0.1:5000/api/v1/balancegetone/<id:int>
 
-Add:
-curl -i -X POST "http://127.0.0.1:5000/api/v1/balancehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"product_id\": \"1\", \"price\": 99.99, \"quantuty\": 10, \"comment\": \"Text\", \"sumprice\": 999.9, \"sumquantity\": 10}"
-
 Delete:
 curl -i -X DELETE "http://127.0.0.1:5000/api/v1/balancehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d  "{ \"id\": <id:int> }"
 
 Update:
-curl -i -X PUT "http://127.0.0.1:5000/api/v1/balancehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"id\": 1, \"price\": 100.99, \"quantuty\": 10}"
+curl -i -X PUT "http://127.0.0.1:5000/api/v1/balancehandler" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"id\": 1, \"price\": 100.99, \"quantity\": 10}"

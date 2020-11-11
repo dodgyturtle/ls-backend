@@ -10,9 +10,8 @@ from werkzeug.exceptions import HTTPException
 # instantiate extensions
 login_manager = LoginManager()
 db = SQLAlchemy()
-api = Api()
 csrf = CSRFProtect()
-
+api = Api(decorators=[csrf.exempt])
 
 def create_app(environment="development"):
 
@@ -34,7 +33,7 @@ def create_app(environment="development"):
 
     # Set up extensions.
     db.init_app(app)
-    api.init_app(app)
+    api.init_app(app, )
     login_manager.init_app(app)
     csrf.init_app(app)
 

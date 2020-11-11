@@ -1,12 +1,12 @@
 DECODING_CODES = {
     '00' : 'Ok',
     '01' : 'Client added',
-    '02' : 'Client no found',
+    '02' : 'Client not found',
     '03' : 'No Clients',
     '04' : 'Client is alredy exist',
     '05' : 'Client updated',
     '06' : 'Stock added',
-    '07' : 'Stock no found',
+    '07' : 'Stock not found',
     '08' : 'No Stocks',
     '09' : 'Stock is alredy exist',
     '10' : 'Stock updated',
@@ -30,5 +30,7 @@ DECODING_CODES = {
     '28' : 'No Balances',
     '29' : 'Balance is alredy exist',
     '30' : 'Balance updated',
+    '31' : 'Client or Product is not exist',
+    '32' : 'Error adding sale',
 }
 TEXT_IF_NO_CODE = 'No error message'

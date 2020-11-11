@@ -9,12 +9,11 @@ from app.utils import ModelMixin
 
 
 class Client(db.Model, ModelMixin, SerializerMixin):
-    serialize_rules = ('-sales', '-comings', '-balances' )
+    serialize_rules = ('-sale', '-stock')
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, server_default=func.now())
     fullname = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.BigInteger, unique=True)
-    productname = db.Column(db.String(100))
     status = db.Column(db.Boolean, default=True)
     comment = db.Column(db.Text)
     sale = db.relationship('Sale', backref='client')
@@ -39,7 +38,7 @@ class Stock(db.Model, ModelMixin, SerializerMixin):
         return self.namestock
 
 class Product(db.Model, ModelMixin, SerializerMixin):
-    serialize_rules = ('-sales', '-comings', '-balances' )
+    serialize_rules = ('-sale', '-coming', '-balance')
     id = db.Column(db.Integer, primary_key=True)
     nameproduct = db.Column(db.String(200))
     sale = db.relationship('Sale', backref='product')
@@ -47,10 +46,10 @@ class Product(db.Model, ModelMixin, SerializerMixin):
     balance = db.relationship('Balance', backref='product')
     
     def __repr__(self):
-        return self.nameproduct, self.numberproduct
+        return str(self.id)
 
 class Sale(db.Model, ModelMixin, SerializerMixin):
-    serialize_rules = ('-product.sales', '-product.comings', '-product.balances', '-client.sales')
+    serialize_rules = ('-product.id', '-client.id')
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, server_default=func.now())
     product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete= 'CASCADE'), index=True)
@@ -66,7 +65,6 @@ class Sale(db.Model, ModelMixin, SerializerMixin):
         return self.id
 
 class Coming(db.Model, ModelMixin, SerializerMixin):
-    serialize_rules = ('-product.id', '-product.sales', '-product.comings', '-product.balances',)
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, server_default=func.now())
     product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete= 'CASCADE'), index=True)
@@ -79,7 +77,7 @@ class Coming(db.Model, ModelMixin, SerializerMixin):
 
 
     def __repr__(self):
-        return str(self.id)
+        return str(self.id), self.product_id
 
 class Balance(db.Model, ModelMixin, SerializerMixin):
     serialize_rules = ('-product.id', '-product.sales', '-product.comings', '-product.balances',)

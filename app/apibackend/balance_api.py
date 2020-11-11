@@ -7,6 +7,10 @@ from flask_restful import Resource
 
 class BalanceGetAll(Resource):
     def get(self):
+        """Get all products from balance.
+        :param:
+        :return:
+        """
         answer_code = '28'
         api_info = None
         all_balance_db = Balance.query.all()
@@ -19,6 +23,10 @@ class BalanceGetAll(Resource):
 
 class BalanceGetOne(Resource):
     def get(self, id):
+        """Get one product from balance.
+        :param: id
+        :return:
+        """
         answer_code = '27'
         api_info = None
         balance_db = Balance.query.filter(Balance.id == id).first()
@@ -30,16 +38,11 @@ class BalanceGetOne(Resource):
 
 
 class BalanceHandler(Resource):
-    def post(self):
-        answer_code = '26'
-        balance_info_from_request = request.get_json()
-        balance_db = Balance(**balance_info_from_request)
-        balance_db.save()
-        api_info = balance_db.to_dict()
-        api_reply = response_processing(answer_code, api_info)
-        return jsonify(api_reply)
-
     def put(self):
+        """Update product in balance.
+        :param: id
+        :return:
+        """
         answer_code = '27'
         api_info = None
         balance_info_from_request = request.get_json()
@@ -55,6 +58,10 @@ class BalanceHandler(Resource):
         return jsonify(api_reply)
 
     def delete(self):
+        """Delete product in balance.
+        :param: id
+        :return:
+        """
         answer_code = '27'
         balance_info_from_request = request.get_json()
         balance_db = Balance.query.filter(Balance.id == balance_info_from_request.get('id')).first()

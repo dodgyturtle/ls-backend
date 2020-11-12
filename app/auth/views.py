@@ -19,7 +19,7 @@ def register():
         flash('Вы зарегистрированы!', 'success')
         return redirect(url_for("webbackend.sale"))
     elif form.is_submitted():
-        flash('Ошибка ввода данных!.', 'danger')
+        flash('Ошибка ввода данных!', 'danger')
     return render_template('auth/register.html', form=form)
 
 
